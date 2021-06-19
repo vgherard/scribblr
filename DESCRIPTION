@@ -7,7 +7,7 @@ Authors@R:
            role = c("aut", "cre"),
            email = "vgherard@sissa.it",
            comment = c(ORCID = "0000-0002-8215-3013"))
-Description: RStudio Addin integrating a minimalist notepad in the RStudio IDE.
+Description: RStudio Addin providing a minimalist notepad for project-related notetaking.
 License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: true
@@ -18,3 +18,5 @@ Imports:
   miniUI (>= 0.1.1),
   rstudioapi (>= 0.5),
   fs
+URL: https://github.com/vgherard/scribblr
+BugReports: https://github.com/vgherard/scribblr/issues
