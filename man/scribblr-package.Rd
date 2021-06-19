@@ -6,7 +6,15 @@
 \alias{scribblr-package}
 \title{scribblr: Notetaking for RStudio Projects}
 \description{
-RStudio Addin integrating a minimalist notepad in the RStudio IDE.
+RStudio Addin providing a minimalist notepad for project-related notetaking.
+}
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://github.com/vgherard/scribblr}
+  \item Report bugs at \url{https://github.com/vgherard/scribblr/issues}
+}
+
 }
 \author{
 \strong{Maintainer}: Valerio Gherardi \email{vgherard@sissa.it} (\href{https://orcid.org/0000-0002-8215-3013}{ORCID})

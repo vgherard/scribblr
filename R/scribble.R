@@ -1,4 +1,43 @@
+# scribblr
+# Copyright (C) 2021  Valerio Gherardi
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+#' @title Open \code{scribblr} note editor
 #'
+#' @author Valerio Gherardi
+#'
+#' @description Opens the \code{scribblr} note editor in a new window.
+#' @details
+#' \code{scribblr} integrates a minimalist note editor within RStudio,
+#' useful for taking quick project-related notes without distractions. Each
+#' RStudio project has associated its own note file, which can be
+#' read and modified by calling \code{scribble()} from an RStudio session with
+#' the active project. If \code{scribble()} is called from a session without any
+#'  active project, a global note file (located at the R home directory) is
+#'  accessed.
+#'
+#' Calling \code{scribble()} opens the \code{scribblr} project notes editor
+#' in a new window. Notes are autosaved when the editor is closed; until that
+#' moment, the R session will remain busy.
+#'
+#' \code{scribble()} can also be called (and, in particular, associated a
+#' custom keystroke) via the RStudio Addin "Open scribblr note editor".
+#' @examples
+#' \dontrun{
+#' scribble()
+#' }
 #' @export
 scribble <- function() {
 	paths <- get_scribble_paths()
@@ -7,6 +46,7 @@ scribble <- function() {
 
 	if (!file.exists(filepath)) {
 		file.create(filepath)
+		cat("A new {scribblr} note file was created at:\n", filepath)
 	}
 
 	txt <- paste0("", readLines(filepath), collapse = "\n")
@@ -33,7 +73,7 @@ scribble <- function() {
 			title,
 			left = NULL,
 			right = miniTitleBarCancelButton(inputId = "close", label = "Close (Esc)")
-			)
+		)
 		,miniContentPanel(
 			textAreaInput(
 				inputId = "noteIO",
@@ -41,10 +81,10 @@ scribble <- function() {
 				value = txt,
 				width = "100%",
 				height = "250px"
-				)
 			)
-
 		)
+
+	)
 
 
 	#-------------------------------------------------------------------- Server

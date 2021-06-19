@@ -1,0 +1,48 @@
+# scribblr
+# Copyright (C) 2021  Valerio Gherardi
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+#' @title Erase \code{scribblr} notes
+#'
+#' @author Valerio Gherardi
+#'
+#' @description Deletes the \code{scribblr} note file associated to the active
+#' RStudio project, if any, otherwise to the global RStudio session.
+#' @examples
+#' \dontrun{
+#' erase()
+#' }
+#' @seealso \link{scribble}
+#' @export
+erase <- function() {
+	paths <- get_scribble_paths()
+	filepath <- paths[["filepath"]]
+	if (!file.exists(filepath)) {
+		cat("No {scribblr} note file to be deleted.")
+		return(invisible(NULL))
+	}
+
+	# Warn about erasing notes
+	cat("This operation will erase your {scribblr} notes.")
+	while (!is_valid_ans(ans <- readline("Do you want to continue? (y/n)> ")))
+		next;
+	if (ans == "y")
+		file.remove(filepath)
+
+	return(invisible(NULL))
+}
+
+is_valid_ans <- function(ans)
+	identical(ans, "y") || identical(ans, "n")

@@ -1,4 +1,4 @@
-Name: Open note editor
-Description: Opens the RStudio Notes editor in a new window.
+Name: Open scribblr note editor
+Description: Opens the scribblr note editor in a new window.
 Binding: scribble
 Interactive: true

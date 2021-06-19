@@ -1,0 +1,30 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# scribblr
+
+<!-- badges: start -->
+<!-- badges: end -->
+
+`scribblr` is an RStudio Addin providing a minimalist notepad for project-related notetaking in RStudio. 
+
+## Installation
+
+You can install the development version of \code{scribblr} from [GitHub](https://github.com/) with:
+
+``` r
+# install.packages("devtools")
+devtools::install_github("vgherard/scribblr")
+```
