@@ -1,5 +1,5 @@
 Package: scribblr
-Title: Notetaking for RStudio Projects
+Title: A Minimalist Notepad Inside RStudio 
 Version: 0.0.0.9000
 Authors@R: 
     person(given = "Valerio",
@@ -7,7 +7,7 @@ Authors@R:
            role = c("aut", "cre"),
            email = "vgherard@sissa.it",
            comment = c(ORCID = "0000-0002-8215-3013"))
-Description: RStudio Addin providing a minimalist notepad for project-related notetaking.
+Description: a minimalist notepad for taking project-related notes in RStudio. Registers an RStudio Addin 
 License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: true

@@ -4,9 +4,9 @@
 \name{scribblr-package}
 \alias{scribblr}
 \alias{scribblr-package}
-\title{scribblr: Notetaking for RStudio Projects}
+\title{scribblr: A Minimalist Notepad Inside RStudio}
 \description{
-RStudio Addin providing a minimalist notepad for project-related notetaking.
+a minimalist notepad for taking project-related notes in RStudio. Registers an RStudio Addin
 }
 \seealso{
 Useful links:
