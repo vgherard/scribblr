@@ -6,7 +6,7 @@
 \alias{scribblr-package}
 \title{scribblr: A Minimalist Notepad Inside RStudio}
 \description{
-a minimalist notepad for taking project-related notes in RStudio. Registers an RStudio Addin
+a minimalist notepad for taking project-related notes in RStudio, which can be invoked either from the console, or from the dedicated RStudio Addin.
 }
 \seealso{
 Useful links:
