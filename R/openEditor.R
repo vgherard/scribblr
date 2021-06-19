@@ -27,7 +27,7 @@ openEditor <- function() {
 		,gadgetTitleBar(
 			paste("Notes for R project at ", base_dir),
 			left = NULL,
-			right = miniTitleBarCancelButton(inputId = "close", label = "Close")
+			right = miniTitleBarCancelButton(inputId = "close", label = "Close (Esc)")
 			)
 		,sidebarLayout(
 			div(id = "sidebar",

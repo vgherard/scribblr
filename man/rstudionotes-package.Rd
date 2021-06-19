@@ -4,9 +4,12 @@
 \name{rstudionotes-package}
 \alias{rstudionotes}
 \alias{rstudionotes-package}
-\title{rstudionotes:}
+\title{rstudionotes: Notetaking for RStudio Projects}
 \description{
-More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
+RStudio Addin integrating a minimalist notepad in the RStudio IDE.
+}
+\author{
+\strong{Maintainer}: Valerio Gherardi \email{vgherard@sissa.it} (\href{https://orcid.org/0000-0002-8215-3013}{ORCID})
+
 }
 \keyword{internal}
