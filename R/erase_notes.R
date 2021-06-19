@@ -26,7 +26,7 @@
 #' }
 #' @seealso \link{scribble}
 #' @export
-erase <- function() {
+erase_notes <- function() {
 	paths <- get_scribble_paths()
 	filepath <- paths[["filepath"]]
 	if (!file.exists(filepath)) {
