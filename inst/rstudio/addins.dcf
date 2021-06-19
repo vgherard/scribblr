@@ -1,4 +1,4 @@
 Name: Open note editor
 Description: Opens the RStudio Notes editor in a new window.
-Binding: openEditor
+Binding: scribble
 Interactive: true
