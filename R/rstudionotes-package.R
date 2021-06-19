@@ -7,5 +7,4 @@
 ## usethis namespace: end
 #' @import shiny
 #' @import miniUI
-#' @import rstudioapi
 NULL
