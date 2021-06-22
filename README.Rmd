@@ -26,7 +26,7 @@ Features:
 - Each RStudio project has its own notes
 - RStudio Addin (which can be associated to a custom keystroke)
 
-![scribblr demonstration](https://github.com/vgherard/scribblr/blob/b4f9d2897ab6fd96c171999cd7b07cbe58594e25/img/scribblr.gif)
+![scribblr demonstration](https://raw.githubusercontent.com/vgherard/scribblr/master/img/scribblr.gif)
 
 ## Installation
 
