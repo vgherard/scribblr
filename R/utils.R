@@ -8,5 +8,4 @@ get_scribble_paths <- function()
 	}
 	filepath <- paste0(dir, "/", ".scribblr")
 	list(dir = dir, filepath = filepath, is_r_project = is_r_project)
-
 }

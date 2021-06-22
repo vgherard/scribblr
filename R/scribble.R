@@ -46,7 +46,7 @@ scribble <- function() {
 
 	if (!file.exists(filepath)) {
 		file.create(filepath)
-		cat("A new {scribblr} note file was created at:\n", filepath)
+		cat("A new {scribblr} note file was created at:\n", filepath, "\n")
 	}
 
 	txt <- paste0("", readLines(filepath), collapse = "\n")
@@ -72,7 +72,9 @@ scribble <- function() {
 		,gadgetTitleBar(
 			title,
 			left = NULL,
-			right = miniTitleBarCancelButton(inputId = "close", label = "Close (Esc)")
+			right = miniTitleBarCancelButton(
+				inputId = "close", label = "Close (Esc)"
+				)
 		)
 		,miniContentPanel(
 			textAreaInput(
