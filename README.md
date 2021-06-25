@@ -9,11 +9,11 @@
 `scribblr` provides a minimalist notepad for taking project-related
 notes in RStudio.
 
-Features:
+Key features:
 
+-   RStudio project-aware
 -   Autosave
--   Each RStudio project has its own notes
--   RStudio Addin (which can be associated to a custom keystroke)
+-   RStudio Addin (with possibility of assigning a custom keystroke)
 
 ![scribblr
 demonstration](https://raw.githubusercontent.com/vgherard/scribblr/master/img/scribblr.gif)
