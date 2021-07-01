@@ -21,12 +21,13 @@
 #' @description Opens the \code{scribblr} note editor in a new window.
 #' @details
 #' \code{scribblr} integrates a minimalist note editor within RStudio,
-#' useful for taking quick project-related notes without distractions. Each
-#' RStudio project has associated its own note file, which can be
+#' useful for taking quick project-related notes without distractions.
+#' \code{scribblr} notes are RStudio project aware: each
+#' project has associated its own note file, which can be
 #' read and modified by calling \code{scribble()} from an RStudio session with
-#' the active project. If \code{scribble()} is called from a session without any
-#'  active project, a global note file (located at the R home directory) is
-#'  accessed.
+#' the active project. If \code{scribble()} is called during a session without
+#' any active project, a global note file (located at the R home directory) is
+#' accessed.
 #'
 #' Calling \code{scribble()} opens the \code{scribblr} project notes editor
 #' in a new window. Notes are autosaved when the editor is closed; until that
@@ -45,8 +46,7 @@ scribble <- function() {
 	filepath <- paths[["filepath"]]
 
 	if (!file.exists(filepath)) {
-		file.create(filepath)
-		cat("A new {scribblr} note file was created at:\n", filepath, "\n")
+		create_scribble_file(dir, filepath)
 	}
 
 	txt <- paste0("", readLines(filepath), collapse = "\n")
@@ -55,19 +55,17 @@ scribble <- function() {
 	if (paths[["is_r_project"]])
 		title <- paste(title, "project at", dir)
 
-	js <- '
-		$(document).on("shiny:connected", function(){
-			Shiny.setInputValue("loaded", 1);
-			Shiny.addCustomMessageHandler("focus",
-				function(NULL) {
-					document.getElementById("noteIO").focus();
-					})
-		});
-	'
-
 	#------------------------------------------------------------ User Interface
 	ui <- miniPage(
-		tags$head(tags$script(HTML(js)))
+		tags$head(tags$script(HTML('
+			$(document).on("shiny:connected", function(){
+				Shiny.setInputValue("loaded", 1);
+				Shiny.addCustomMessageHandler("focus",
+					function(NULL) {
+						document.getElementById("noteIO").focus();
+						})
+				});
+			')))
 
 		,gadgetTitleBar(
 			title,
