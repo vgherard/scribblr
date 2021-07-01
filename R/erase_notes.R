@@ -36,13 +36,9 @@ erase_notes <- function() {
 
 	# Warn about erasing notes
 	cat("This operation will erase your {scribblr} notes.")
-	while (!is_valid_ans(ans <- readline("Do you want to continue? (y/n)> ")))
-		next;
-	if (ans == "y")
+	if (ask_yesno_qn("Do you want to continue?"))
 		file.remove(filepath)
 
 	return(invisible(NULL))
 }
 
-is_valid_ans <- function(ans)
-	identical(ans, "y") || identical(ans, "n")
