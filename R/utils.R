@@ -9,3 +9,21 @@ get_scribble_paths <- function()
 	filepath <- paste0(dir, "/", ".scribblr")
 	list(dir = dir, filepath = filepath, is_r_project = is_r_project)
 }
+
+create_scribble_file <- function(dir, filepath)
+{
+	file.create(filepath)
+	cat("A new {scribblr} note file was created at:\n", filepath, "\n")
+	if (file.exists(paste0(dir, "/.Rbuildignore")))
+		usethis::use_build_ignore(".scribblr")
+}
+
+ask_yesno_qn <- function(qn) {
+	prompt <- paste(qn, "(y/n)> ")
+	while (!is_valid_ans(ans <- readline(prompt)))
+		next;
+	return(ans == "y")
+}
+
+is_valid_ans <- function(ans)
+	identical(ans, "y") || identical(ans, "n")
