@@ -11,11 +11,12 @@ Opens the \code{scribblr} note editor in a new window.
 }
 \details{
 \code{scribblr} integrates a minimalist note editor within RStudio,
-useful for taking quick project-related notes without distractions. Each
-RStudio project has associated its own note file, which can be
+useful for taking quick project-related notes without distractions.
+\code{scribblr} notes are RStudio project aware: each
+project has associated its own note file, which can be
 read and modified by calling \code{scribble()} from an RStudio session with
-the active project. If \code{scribble()} is called from a session without any
-active project, a global note file (located at the R home directory) is
+the active project. If \code{scribble()} is called during a session without
+any active project, a global note file (located at the R home directory) is
 accessed.
 
 Calling \code{scribble()} opens the \code{scribblr} project notes editor

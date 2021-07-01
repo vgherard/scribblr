@@ -8,7 +8,7 @@ erase_notes()
 }
 \description{
 Deletes the \code{scribblr} note file associated to the active
-RStudio project, if any, otherwise to the global RStudio session.
+RStudio project (or to the global RStudio session, if no project is active).
 }
 \examples{
 \dontrun{
