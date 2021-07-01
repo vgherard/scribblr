@@ -27,8 +27,8 @@
 #' @seealso \link{scribble}
 #' @export
 erase_notes <- function() {
-	paths <- get_scribble_paths()
-	filepath <- paths[["filepath"]]
+	dir <- get_scribblr_path()[["dir"]]
+	filepath <- scribblr_filepath(dir)
 	if (!file.exists(filepath)) {
 		cat("No {scribblr} note file to be deleted.")
 		return(invisible(NULL))

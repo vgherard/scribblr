@@ -41,18 +41,18 @@
 #' }
 #' @export
 scribble <- function() {
-	paths <- get_scribble_paths()
-	dir <- paths[["dir"]]
-	filepath <- paths[["filepath"]]
-
-	if (!file.exists(filepath)) {
-		create_scribble_file(dir, filepath)
+	path <- get_scribblr_path()
+	dir <- path[["dir"]]
+	if (!check_scribblr_file(dir)) {
+		message("Execution aborted by user.")
+		return(invisible(NULL))
 	}
+	filepath <- scribblr_filepath(dir)
 
 	txt <- paste0("", readLines(filepath), collapse = "\n")
 
 	title <- "Notes for RStudio"
-	if (paths[["is_r_project"]])
+	if (path[["is_r_project"]])
 		title <- paste(title, "project at", dir)
 
 	#------------------------------------------------------------ User Interface
@@ -85,7 +85,6 @@ scribble <- function() {
 		)
 
 	)
-
 
 	#-------------------------------------------------------------------- Server
 	server <- function(input, output, session) {
