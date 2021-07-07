@@ -17,6 +17,7 @@ Imports:
   shiny (>= 0.13),
   miniUI (>= 0.1.1),
   rstudioapi (>= 0.5),
-  fs
+  fs,
+  usethis
 URL: https://github.com/vgherard/scribblr
 BugReports: https://github.com/vgherard/scribblr/issues
