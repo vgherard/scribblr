@@ -16,6 +16,8 @@ knitr::opts_chunk$set(
 # scribblr
 
 <!-- badges: start -->
+[![CRAN status](https://www.r-pkg.org/badges/version/scribblr)](https://CRAN.R-project.org/package=scribblr)
+[![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text={scribblr}:%20A%20Minimalist%20Notepad%20Inside%20RStudio&url=https://github.com/vgherard/scribblr&via=ValerioGherardi&hashtags=rstats,rstudio,productivity)
 <!-- badges: end -->
 
 `scribblr` provides a minimalist notepad for taking project-related notes in RStudio.
