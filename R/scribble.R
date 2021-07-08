@@ -55,6 +55,8 @@ scribble <- function() {
 	if (path[["is_r_project"]])
 		title <- paste(title, "project at", dir)
 
+	ver <- packageVersion("scribblr")
+
 	#------------------------------------------------------------ User Interface
 	ui <- miniPage(
 		tags$head(tags$script(HTML('
@@ -80,10 +82,15 @@ scribble <- function() {
 				label = NULL,
 				value = txt,
 				width = "100%",
-				height = "250px"
+				height = "325px"
 			)
 		)
-
+		,a(
+			align = "center",
+			paste0("{scribblr} v", ver),
+			icon("github fa-1x"),
+			href = "https://github.com/vgherard/scribblr"
+		)
 	)
 
 	#-------------------------------------------------------------------- Server
