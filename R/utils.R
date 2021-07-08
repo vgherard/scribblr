@@ -10,7 +10,7 @@ get_scribblr_path <- function()
 }
 
 scribblr_filepath <- function(dir)
-	paste0(dir, "/", ".scribblr")
+	file.path(dir, ".scribblr")
 
 check_scribblr_file <- function(dir)
 {
@@ -22,7 +22,7 @@ check_scribblr_file <- function(dir)
 		return(FALSE)
 	file.create(filepath)
 	cat("A new {scribblr} note file was created at:\n", filepath, "\n")
-	if (file.exists(paste0(dir, "/.Rbuildignore")))
+	if (file.exists( file.path(dir, ".Rbuildignore") ))
 		usethis::use_build_ignore(".scribblr")
 	return(TRUE)
 }
