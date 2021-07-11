@@ -77,19 +77,29 @@ scribble <- function() {
 				)
 		)
 		,miniContentPanel(
-			textAreaInput(
-				inputId = "noteIO",
-				label = NULL,
-				value = txt,
-				placeholder = scribblr_placeholder(),
-				width = "100%",
-				height = "280px"
+
+			conditionalPanel(
+				condition = "input.previewMarkdown % 2 == 0",
+				textAreaInput(
+					inputId = "noteIO",
+					label = NULL,
+					value = txt,
+					placeholder = scribblr_placeholder(),
+					width = "100%",
+					height = "280px"
+				)
 			)
+
+			,conditionalPanel(
+				condition = "input.previewMarkdown % 2 == 1",
+				uiOutput("markdownPreview")
+			)
+
 		)
 		,miniButtonBlock(
 			actionButton(
 				inputId = "previewMarkdown",
-				label = "Preview",
+				label = "Toggle Markdown preview",
 				icon = icon("markdown")
 			)
 			,actionButton(
@@ -117,12 +127,17 @@ scribble <- function() {
 			invisible(stopApp())
 		}, ignoreInit = TRUE)
 
+		output$markdownPreview <- renderUI(markdown(input$noteIO))
+
 		observeEvent(input$saveToFile, {
 			try({
-				file <- file.choose(new = T)
-				write(input$noteIO, file, append = F)
-				session$sendCustomMessage("focus", list(NULL))
-			})
+				write(input$noteIO, file.choose(new = T), append = F)
+			}, silent = TRUE)
+			session$sendCustomMessage("focus", list(NULL))
+		}, ignoreInit = TRUE)
+
+		observeEvent(input$previewMarkdown, {
+			session$sendCustomMessage("focus", list(NULL))
 		}, ignoreInit = TRUE)
 	}
 
