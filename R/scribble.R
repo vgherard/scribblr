@@ -72,6 +72,8 @@ scribble <- function() {
 				});
 			')))
 
+
+
 		,gadgetTitleBar(
 			title,
 			left = NULL,
@@ -134,6 +136,22 @@ scribble <- function() {
 
 	#-------------------------------------------------------------------- Server
 	server <- function(input, output, session) {
+		### c.f. https://stackoverflow.com/questions/6140632/
+		observe(shinyjs::runjs("
+			document.getElementById('noteIO').addEventListener('keydown',
+			function(e) {
+				if (e.key == 'Tab') {
+    				e.preventDefault();
+    				var start = this.selectionStart;
+    				var end = this.selectionEnd;
+
+    				this.value = this.value.substring(0, start) +
+    					\"\t\" + this.value.substring(end);
+
+    				this.selectionStart = this.selectionEnd = start + 1;
+			}
+		});"))
+
 		observeEvent(input$loaded, {
 			session$sendCustomMessage("focus", list(NULL))
 		})
