@@ -111,9 +111,18 @@ scribble <- function() {
 		observeEvent(input$loaded, {
 			session$sendCustomMessage("focus", list(NULL))
 		})
+
 		observeEvent(input$close, {
 			write(input$noteIO, filepath, append = F)
 			invisible(stopApp())
+		}, ignoreInit = TRUE)
+
+		observeEvent(input$saveToFile, {
+			try({
+				file <- file.choose(new = T)
+				write(input$noteIO, file, append = F)
+				session$sendCustomMessage("focus", list(NULL))
+			})
 		}, ignoreInit = TRUE)
 	}
 
