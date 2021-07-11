@@ -4,6 +4,7 @@
 
 - Notes can now be exported to an external file (#4)
 - Markdown previews now available (#3)
+- Added placeholder text explaining when and where `{scribblr}` notes are stored (#4)
 
 ### Fixes
 
