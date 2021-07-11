@@ -62,6 +62,7 @@ scribble <- function() {
 		keys::useKeys()
 		,shinyjs::useShinyjs()
 
+		# Set focus on text area input
 		,tags$head(tags$script(HTML('
 			$(document).on("shiny:connected", function(){
 				Shiny.setInputValue("loaded", 1);
@@ -71,7 +72,6 @@ scribble <- function() {
 						})
 				});
 			')))
-
 
 
 		,gadgetTitleBar(
@@ -152,16 +152,10 @@ scribble <- function() {
 			}
 		});"))
 
+		# Set focus on text area on load
 		observeEvent(input$loaded, {
 			session$sendCustomMessage("focus", list(NULL))
 		})
-
-		observeEvent(input$closeButton, {
-			write(input$noteIO, filepath, append = F)
-			invisible(stopApp())
-		}, ignoreInit = TRUE)
-
-		output$preview <- renderUI(markdown(input$noteIO))
 
 		observeEvent(
 			list(input$saveToFileKeys, input$saveToFileButton),
@@ -169,18 +163,24 @@ scribble <- function() {
 			try({
 				write(input$noteIO, file.choose(new = T), append = F)
 			}, silent = TRUE)
-			session$sendCustomMessage("focus", list(NULL))
+			session$sendCustomMessage("focus", list(NULL)) # refocus text area
 		}, ignoreInit = TRUE)
 
-
+		output$preview <- renderUI(markdown(input$noteIO))
 		observeEvent(
 			input$previewKeys,
 			shinyjs::click("previewButton"),
 			ignoreInit = TRUE
 			)
 		observeEvent(input$previewButton, {
-			session$sendCustomMessage("focus", list(NULL))
+			session$sendCustomMessage("focus", list(NULL))  # refocus text area
 		}, ignoreInit = TRUE)
+
+		observeEvent(input$closeButton, {
+			write(input$noteIO, filepath, append = F)
+			invisible(stopApp())
+		}, ignoreInit = TRUE)
+
 	}
 
 
