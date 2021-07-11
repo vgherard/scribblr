@@ -73,13 +73,13 @@ scribble <- function() {
 			title,
 			left = NULL,
 			right = miniTitleBarCancelButton(
-				inputId = "close", label = "Close (Esc)"
+				inputId = "closeButton", label = "Close (Esc)"
 				)
 		)
 		,miniContentPanel(
 
 			conditionalPanel(
-				condition = "input.previewMarkdown % 2 == 0",
+				condition = "input.previewMarkdownButton % 2 == 0",
 				textAreaInput(
 					inputId = "noteIO",
 					label = NULL,
@@ -91,19 +91,19 @@ scribble <- function() {
 			)
 
 			,conditionalPanel(
-				condition = "input.previewMarkdown % 2 == 1",
-				uiOutput("markdownPreview")
+				condition = "input.previewMarkdownButton % 2 == 1",
+				uiOutput("preview")
 			)
 
 		)
 		,miniButtonBlock(
 			actionButton(
-				inputId = "previewMarkdown",
-				label = "Toggle Markdown preview",
+				inputId = "previewMarkdownButton",
+				label = "Toggle preview",
 				icon = icon("markdown")
 			)
 			,actionButton(
-				inputId = "saveToFile",
+				inputId = "saveToFileButton",
 				label = "Save to file",
 				icon = icon("save")
 			)
@@ -122,21 +122,21 @@ scribble <- function() {
 			session$sendCustomMessage("focus", list(NULL))
 		})
 
-		observeEvent(input$close, {
+		observeEvent(input$closeButton, {
 			write(input$noteIO, filepath, append = F)
 			invisible(stopApp())
 		}, ignoreInit = TRUE)
 
-		output$markdownPreview <- renderUI(markdown(input$noteIO))
+		output$preview <- renderUI(markdown(input$noteIO))
 
-		observeEvent(input$saveToFile, {
+		observeEvent(input$saveToFileButton, {
 			try({
 				write(input$noteIO, file.choose(new = T), append = F)
 			}, silent = TRUE)
 			session$sendCustomMessage("focus", list(NULL))
 		}, ignoreInit = TRUE)
 
-		observeEvent(input$previewMarkdown, {
+		observeEvent(input$previewMarkdownButton, {
 			session$sendCustomMessage("focus", list(NULL))
 		}, ignoreInit = TRUE)
 	}
