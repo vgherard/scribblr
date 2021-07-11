@@ -83,7 +83,19 @@ scribble <- function() {
 				value = txt,
 				placeholder = scribblr_placeholder(),
 				width = "100%",
-				height = "325px"
+				height = "280px"
+			)
+		)
+		,miniButtonBlock(
+			actionButton(
+				inputId = "previewMarkdown",
+				label = "Preview",
+				icon = icon("markdown")
+			)
+			,actionButton(
+				inputId = "saveToFile",
+				label = "Save to file",
+				icon = icon("save")
 			)
 		)
 		,a(
