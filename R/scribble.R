@@ -59,7 +59,10 @@ scribble <- function() {
 
 	#------------------------------------------------------------ User Interface
 	ui <- miniPage(
-		tags$head(tags$script(HTML('
+		keys::useKeys()
+		,shinyjs::useShinyjs()
+
+		,tags$head(tags$script(HTML('
 			$(document).on("shiny:connected", function(){
 				Shiny.setInputValue("loaded", 1);
 				Shiny.addCustomMessageHandler("focus",
@@ -76,10 +79,11 @@ scribble <- function() {
 				inputId = "closeButton", label = "Close (Esc)"
 				)
 		)
+
 		,miniContentPanel(
 
 			conditionalPanel(
-				condition = "input.previewMarkdownButton % 2 == 0",
+				condition = "input.previewButton % 2 == 0",
 				textAreaInput(
 					inputId = "noteIO",
 					label = NULL,
@@ -91,23 +95,35 @@ scribble <- function() {
 			)
 
 			,conditionalPanel(
-				condition = "input.previewMarkdownButton % 2 == 1",
+				condition = "input.previewButton % 2 == 1",
 				uiOutput("preview")
 			)
 
 		)
+
 		,miniButtonBlock(
-			actionButton(
-				inputId = "previewMarkdownButton",
-				label = "Toggle preview",
-				icon = icon("markdown")
+
+			keys::keysInput("previewKeys",
+				c("ctrl+p", "command+p"),
+				global = TRUE
 			)
 			,actionButton(
+				inputId = "previewButton",
+				label = "Toggle preview (Ctrl+P)",
+				icon = icon("markdown")
+			)
+
+			,keys::keysInput("saveToFileKeys",
+					   c("ctrl+s", "command+s"),
+					   global = TRUE
+					   )
+			,actionButton(
 				inputId = "saveToFileButton",
-				label = "Save to file",
+				label = "Save to file (Ctrl+S)",
 				icon = icon("save")
 			)
 		)
+
 		,a(
 			align = "center",
 			paste0("{scribblr} v", ver),
@@ -129,14 +145,22 @@ scribble <- function() {
 
 		output$preview <- renderUI(markdown(input$noteIO))
 
-		observeEvent(input$saveToFileButton, {
+		observeEvent(
+			list(input$saveToFileKeys, input$saveToFileButton),
+		{
 			try({
 				write(input$noteIO, file.choose(new = T), append = F)
 			}, silent = TRUE)
 			session$sendCustomMessage("focus", list(NULL))
 		}, ignoreInit = TRUE)
 
-		observeEvent(input$previewMarkdownButton, {
+
+		observeEvent(
+			input$previewKeys,
+			shinyjs::click("previewButton"),
+			ignoreInit = TRUE
+			)
+		observeEvent(input$previewButton, {
 			session$sendCustomMessage("focus", list(NULL))
 		}, ignoreInit = TRUE)
 	}

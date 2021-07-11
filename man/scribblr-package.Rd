@@ -11,7 +11,6 @@ a minimalist notepad for taking project-related notes in RStudio, which can be i
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://github.com/vgherard/scribblr}
   \item Report bugs at \url{https://github.com/vgherard/scribblr/issues}
 }
 
