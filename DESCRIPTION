@@ -21,6 +21,4 @@ Imports:
   rstudioapi (>= 0.5),
   fs,
   usethis
-Remotes:
-  vgherard/keys@global-bind
 BugReports: https://github.com/vgherard/scribblr/issues

@@ -73,7 +73,6 @@ scribble <- function() {
 				});
 			')))
 
-
 		,gadgetTitleBar(
 			title,
 			left = NULL,
