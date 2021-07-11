@@ -49,7 +49,7 @@ scribble <- function() {
 	}
 	filepath <- scribblr_filepath(dir)
 
-	txt <- paste0("", readLines(filepath), collapse = "\n")
+	txt <- paste0(readLines(filepath), collapse = "\n")
 
 	title <- "Notes for RStudio"
 	if (path[["is_r_project"]])
@@ -81,6 +81,7 @@ scribble <- function() {
 				inputId = "noteIO",
 				label = NULL,
 				value = txt,
+				placeholder = scribblr_placeholder(),
 				width = "100%",
 				height = "325px"
 			)
