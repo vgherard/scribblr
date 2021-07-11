@@ -49,7 +49,7 @@ scribble <- function() {
 	}
 	filepath <- scribblr_filepath(dir)
 
-	txt <- paste0("", readLines(filepath), collapse = "\n")
+	txt <- paste0(readLines(filepath), collapse = "\n")
 
 	title <- "Notes for RStudio"
 	if (path[["is_r_project"]])
@@ -73,16 +73,39 @@ scribble <- function() {
 			title,
 			left = NULL,
 			right = miniTitleBarCancelButton(
-				inputId = "close", label = "Close (Esc)"
+				inputId = "closeButton", label = "Close (Esc)"
 				)
 		)
 		,miniContentPanel(
-			textAreaInput(
-				inputId = "noteIO",
-				label = NULL,
-				value = txt,
-				width = "100%",
-				height = "325px"
+
+			conditionalPanel(
+				condition = "input.previewMarkdownButton % 2 == 0",
+				textAreaInput(
+					inputId = "noteIO",
+					label = NULL,
+					value = txt,
+					placeholder = scribblr_placeholder(),
+					width = "100%",
+					height = "280px"
+				)
+			)
+
+			,conditionalPanel(
+				condition = "input.previewMarkdownButton % 2 == 1",
+				uiOutput("preview")
+			)
+
+		)
+		,miniButtonBlock(
+			actionButton(
+				inputId = "previewMarkdownButton",
+				label = "Toggle preview",
+				icon = icon("markdown")
+			)
+			,actionButton(
+				inputId = "saveToFileButton",
+				label = "Save to file",
+				icon = icon("save")
 			)
 		)
 		,a(
@@ -98,9 +121,23 @@ scribble <- function() {
 		observeEvent(input$loaded, {
 			session$sendCustomMessage("focus", list(NULL))
 		})
-		observeEvent(input$close, {
+
+		observeEvent(input$closeButton, {
 			write(input$noteIO, filepath, append = F)
 			invisible(stopApp())
+		}, ignoreInit = TRUE)
+
+		output$preview <- renderUI(markdown(input$noteIO))
+
+		observeEvent(input$saveToFileButton, {
+			try({
+				write(input$noteIO, file.choose(new = T), append = F)
+			}, silent = TRUE)
+			session$sendCustomMessage("focus", list(NULL))
+		}, ignoreInit = TRUE)
+
+		observeEvent(input$previewMarkdownButton, {
+			session$sendCustomMessage("focus", list(NULL))
 		}, ignoreInit = TRUE)
 	}
 
