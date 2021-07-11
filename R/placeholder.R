@@ -6,7 +6,7 @@ scribblr_placeholder <- function() {
 		," The content of this text area will be automatically saved in ",
 		filepath, " upon closing this window.\n\n"
 		,"If you encounter a bug or want to suggest an improvement, ",
-		"please follow the GitHub link at the bottom of this page and file ",
+		"please follow the GitHub link at the bottom of this window and file ",
 		"an issue in the {scribblr} repository."
 	)
 }
