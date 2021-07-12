@@ -1,3 +1,14 @@
+# scribblr 0.0.4
+
+### New features
+
+- New logo for `{scribblr}`
+
+### UI change
+
+- "Close" button becomes "Done" button
+- UI displays the logo
+
 # scribblr 0.0.3
 
 ### New features

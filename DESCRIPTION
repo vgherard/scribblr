@@ -1,6 +1,6 @@
 Package: scribblr
 Title: A Minimalist Notepad Inside RStudio 
-Version: 0.0.3
+Version: 0.0.4
 Authors@R: 
     person(given = "Valerio",
            family = "Gherardi",
