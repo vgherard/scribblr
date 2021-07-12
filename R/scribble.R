@@ -58,6 +58,7 @@ scribble <- function() {
 	ver <- packageVersion("scribblr")
 
 	#------------------------------------------------------------ User Interface
+	addResourcePath("img", system.file("img", package = "scribblr"))
 	ui <- miniPage(
 		keys::useKeys()
 		,shinyjs::useShinyjs()
@@ -75,7 +76,7 @@ scribble <- function() {
 
 		,gadgetTitleBar(
 			title,
-			left = NULL,
+			left = img(src = "img/logo.png", width = 39),
 			right = miniTitleBarCancelButton(
 				inputId = "closeButton", label = "Close (Esc)"
 				)

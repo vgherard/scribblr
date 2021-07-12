@@ -19,4 +19,5 @@ print(
 	))
 
 usethis::use_logo("img/logo.png")
-
+if (!dir.exists("inst/img")) dir.create("inst/img")
+file.copy("img/logo.png", "inst/img/logo.png")
