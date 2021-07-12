@@ -78,7 +78,7 @@ scribble <- function() {
 			title,
 			left = img(src = "img/logo.png", width = 39),
 			right = miniTitleBarCancelButton(
-				inputId = "closeButton", label = "Close (Esc)"
+				inputId = "doneButton", label = "Done (Esc)"
 				)
 		)
 
@@ -176,7 +176,7 @@ scribble <- function() {
 			session$sendCustomMessage("focus", list(NULL))  # refocus text area
 		}, ignoreInit = TRUE)
 
-		observeEvent(input$closeButton, {
+		observeEvent(input$doneButton, {
 			write(input$noteIO, filepath, append = F)
 			invisible(stopApp())
 		}, ignoreInit = TRUE)
