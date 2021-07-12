@@ -16,9 +16,10 @@ RoxygenNote: 7.1.1
 Imports:
   shiny (>= 0.13),
   miniUI (>= 0.1.1),
-  keys,
   shinyjs,
   rstudioapi (>= 0.5),
   fs,
-  usethis
+  usethis,
+  keys,
+  gh
 BugReports: https://github.com/vgherard/scribblr/issues
