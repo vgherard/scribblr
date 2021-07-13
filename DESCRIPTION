@@ -22,3 +22,6 @@ Imports:
   fs,
   usethis
 BugReports: https://github.com/vgherard/scribblr/issues
+Suggests: 
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
