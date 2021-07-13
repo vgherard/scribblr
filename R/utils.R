@@ -1,4 +1,4 @@
-get_scribblr_path <- function()
+get_cur_proj <- function()
 {
 	dir <- rstudioapi::getActiveProject()
 	is_r_project <- !is.null(dir)
@@ -9,22 +9,44 @@ get_scribblr_path <- function()
 	list(dir = dir, is_r_project = is_r_project)
 }
 
-scribblr_filepath <- function(dir)
-	file.path(dir, ".scribblr")
+scribblr_dir_name <- function() ".scribblr"
 
-check_scribblr_file <- function(dir)
+scribblr_dir <- function(proj_dir) file.path(proj_dir, scribblr_dir_name())
+
+scribblr_dir_exists <- function(proj_dir)
+	dir.exists(scribblr_dir(proj_dir))
+
+scribblr_dir_create <- function(check = TRUE)
 {
-	filepath <- scribblr_filepath(dir)
-	if (file.exists(filepath))
-		return(TRUE)
-	cat("No {scribblr} file found at:\n", filepath, "\n")
-	if ( !ask_yesno_qn("Do you want to create one?") )
-		return(FALSE)
-	file.create(filepath)
-	cat("A new {scribblr} note file was created at:\n", filepath, "\n")
-	if (file.exists( file.path(dir, ".Rbuildignore") ))
-		usethis::use_build_ignore(".scribblr")
-	return(TRUE)
+	proj_dir <- get_cur_proj()[["dir"]]
+	scribblr_dir <- scribblr_dir(proj_dir)
+
+	if (check)
+	{
+		if (dir.exists(scribblr_dir))
+			return()
+		cat("{scribblr} directory", scribblr_dir, "does not exist.\n"
+			,file = stderr()
+			)
+		if (!ask_yesno_qn("Should I create one?"))
+			stop("Execution aborted by user.")
+	}
+
+	dir.create(scribblr_dir)
+	cat("A new {scribblr} note file was created at:\n", scribblr_dir, "\n")
+
+	if (file.exists( file.path(proj_dir, ".Rbuildignore") ))
+		usethis::use_build_ignore(scribblr_dir_name())
+}
+
+get_note_name <- function(note)
+{
+	if (missing(note))
+		return("main")
+
+	if (!is.character(note) && length(note) == 1 && !is.na(note))
+			stop("'note' must be a character of length one (not NA).")
+	paste0("00", note)
 }
 
 ask_yesno_qn <- function(qn) {

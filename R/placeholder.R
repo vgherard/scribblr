@@ -1,5 +1,5 @@
 scribblr_placeholder <- function() {
-	path <- get_scribblr_path(); filepath <- scribblr_filepath(path[["dir"]])
+	path <- get_cur_proj(); filepath <- scribblr_filepath(path[["dir"]])
 	paste0(
 		"Welcome to {scribblr}!\n\n"
 		,"You can use this space to take quick notes about the current project."

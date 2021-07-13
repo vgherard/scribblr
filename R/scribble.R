@@ -40,25 +40,10 @@
 #' scribble()
 #' }
 #' @export
-scribble <- function() {
-	path <- get_scribblr_path()
-	dir <- path[["dir"]]
-	if (!check_scribblr_file(dir)) {
-		message("Execution aborted by user.")
-		return(invisible(NULL))
-	}
-	filepath <- scribblr_filepath(dir)
-
-	txt <- paste0(readLines(filepath), collapse = "\n")
-
-	title <- "Notes for RStudio"
-	if (path[["is_r_project"]])
-		title <- paste(title, "project at", dir)
-
-	ver <- packageVersion("scribblr")
+scribble <- function(note) {
+	data <- scribble_init(note)
 
 	#------------------------------------------------------------ User Interface
-	addResourcePath("img", system.file("img", package = "scribblr"))
 	ui <- miniPage(
 		keys::useKeys()
 		,shinyjs::useShinyjs()
@@ -187,4 +172,22 @@ scribble <- function() {
 	#------------------------------------------------------------------- Run App
 	viewer <- dialogViewer(dialogName = "scribblr", width = 800, height = 600)
 	runGadget(ui, server, viewer = viewer, stopOnCancel = FALSE)
+}
+
+scribble_init <- function(note) {
+	scribblr_dir_create(check = TRUE)
+
+	note <- get_note_name(note)
+
+
+	proj <- get_cur_proj()
+	txt <- paste0(readLines(filepath), collapse = "\n")
+
+	title <- "Notes for RStudio"
+	if (path[["is_r_project"]])
+		title <- paste(title, "project at", dir)
+
+	ver <- packageVersion("scribblr")
+
+	addResourcePath("img", system.file("img", package = "scribblr"))
 }
