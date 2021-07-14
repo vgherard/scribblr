@@ -43,7 +43,6 @@ scribblr_delete <- function(note) {
 	return(invisible(NULL))
 }
 
-
 #' @title List \code{scribblr} notes
 #'
 #' @author Valerio Gherardi
