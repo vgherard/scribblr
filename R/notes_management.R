@@ -23,7 +23,7 @@
 #' @return returns \code{NULL}, invisibly. Used for side-effects.
 #' @examples
 #' \dontrun{
-#' erase()
+#' scribblr_delete("todo")
 #' }
 #' @seealso \link{scribble}
 #' @export
@@ -43,3 +43,25 @@ scribblr_delete <- function(note) {
 	return(invisible(NULL))
 }
 
+#' @title List \code{scribblr} notes
+#'
+#' @author Valerio Gherardi
+#'
+#' @description List all \code{scribblr} notes.
+#' @return a character vector.
+#' @examples
+#' \dontrun{
+#' scribblr_list("todo")
+#' }
+#' @seealso \link{scribble}
+#' @export
+scribblr_list <- function() {
+	if (!dir.exists(scribblr_dir())) {
+		warn_missing_scribblr_dir()
+		return(character())
+	}
+
+	path <- file.path(scribblr_dir(), "notes")
+
+	basename(fs::dir_ls(path))
+}
