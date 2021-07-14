@@ -6,6 +6,13 @@
 \usage{
 scribble(note = NULL)
 }
+\arguments{
+\item{note}{either \code{NULL}, or a length one character (not \code{NA}).
+See details.}
+}
+\value{
+returns \code{NULL}, invisibly. Called for side-effects.
+}
 \description{
 Opens the \code{scribblr} note editor in a new window.
 }

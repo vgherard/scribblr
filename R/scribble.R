@@ -19,7 +19,9 @@
 #' @author Valerio Gherardi
 #'
 #' @description Opens the \code{scribblr} note editor in a new window.
-#' @param note
+#' @param note either \code{NULL}, or a length one character (not \code{NA}).
+#' See details.
+#' @return returns \code{NULL}, invisibly. Called for side-effects.
 #' @details
 #' \code{scribblr} integrates a minimalist note editor within RStudio,
 #' useful for taking quick project-related notes without distractions.
