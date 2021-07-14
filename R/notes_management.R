@@ -38,7 +38,7 @@ scribblr_delete <- function(note) {
 	# Warn about erasing notes
 	cat("This operation will erase your {scribblr} note and cannot be undone.")
 	if (ask_yesno_qn("Do you want to proceed?"))
-		file.remove(filepath)
+		fs::dir_delete(dirname(path))
 
 	return(invisible(NULL))
 }
