@@ -4,7 +4,7 @@
 \alias{scribble}
 \title{Open \code{scribblr} note editor}
 \usage{
-scribble()
+scribble(note = NULL)
 }
 \description{
 Opens the \code{scribblr} note editor in a new window.

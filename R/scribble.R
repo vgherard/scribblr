@@ -40,7 +40,7 @@
 #' scribble()
 #' }
 #' @export
-scribble <- function(note) {
+scribble <- function(note = NULL) {
 	data <- scribble_init(note)
 
 	#------------------------------------------------------------ User Interface
@@ -60,7 +60,7 @@ scribble <- function(note) {
 			')))
 
 		,gadgetTitleBar(
-			title,
+			data[["title"]],
 			left = img(src = "img/logo.png", width = 39),
 			right = miniTitleBarCancelButton(
 				inputId = "doneButton", label = "Done (Esc)"
@@ -74,7 +74,7 @@ scribble <- function(note) {
 				textAreaInput(
 					inputId = "noteIO",
 					label = NULL,
-					value = txt,
+					value = data[["txt"]],
 					placeholder = scribblr_placeholder(),
 					width = "100%",
 					height = "280px"
@@ -113,7 +113,7 @@ scribble <- function(note) {
 
 		,a(
 			align = "center",
-			paste0("{scribblr} v", ver),
+			paste0("{scribblr} v", data[["ver"]]),
 			icon("github fa-1x"),
 			href = "https://github.com/vgherard/scribblr"
 		)
@@ -162,7 +162,7 @@ scribble <- function(note) {
 		}, ignoreInit = TRUE)
 
 		observeEvent(input$doneButton, {
-			write(input$noteIO, filepath, append = F)
+			write(input$noteIO, data[["note_path"]], append = F)
 			invisible(stopApp())
 		}, ignoreInit = TRUE)
 
@@ -176,18 +176,21 @@ scribble <- function(note) {
 
 scribble_init <- function(note) {
 	scribblr_dir_create(check = TRUE)
-
-	note <- get_note_name(note)
-
+	scribblr_note_create(note = note, check = TRUE)
 
 	proj <- get_cur_proj()
-	txt <- paste0(readLines(filepath), collapse = "\n")
+	note_path <- scribblr_note_path(note = note)
+	txt <- paste0(readLines(note_path), collapse = "\n")
 
 	title <- "Notes for RStudio"
-	if (path[["is_r_project"]])
-		title <- paste(title, "project at", dir)
+	if (proj[["is_r_project"]])
+		title <- paste(title, "project at", proj[["dir"]])
 
 	ver <- packageVersion("scribblr")
 
 	addResourcePath("img", system.file("img", package = "scribblr"))
+
+	list(
+		note = note, note_path = note_path, txt = txt, title = title, ver = ver
+		)
 }
