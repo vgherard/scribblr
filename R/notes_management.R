@@ -14,29 +14,30 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#' @title Erase \code{scribblr} notes
+#' @title Delete a \code{scribblr} note
 #'
 #' @author Valerio Gherardi
 #'
-#' @description Deletes the \code{scribblr} note file associated to the active
-#' RStudio project (or to the global RStudio session, if no project is active).
+#' @description Delete a \code{scribblr} note.
+#' @param note a length one character (not NA). Note to be deleted.
+#' @return returns \code{NULL}, invisibly. Used for side-effects.
 #' @examples
 #' \dontrun{
 #' erase()
 #' }
 #' @seealso \link{scribble}
 #' @export
-erase_notes <- function() {
-	dir <- get_cur_proj()[["dir"]]
-	filepath <- scribblr_filepath(dir)
-	if (!file.exists(filepath)) {
-		cat("No {scribblr} note file to be deleted.")
+scribblr_delete <- function(note) {
+	path <- scribblr_note_path(note)
+
+	if (!file.exists(path)) {
+		warn_missing_note()
 		return(invisible(NULL))
 	}
 
 	# Warn about erasing notes
-	cat("This operation will erase your {scribblr} notes.")
-	if (ask_yesno_qn("Do you want to continue?"))
+	cat("This operation will erase your {scribblr} note and cannot be undone.")
+	if (ask_yesno_qn("Do you want to proceed?"))
 		file.remove(filepath)
 
 	return(invisible(NULL))

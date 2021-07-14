@@ -65,9 +65,7 @@ scribblr_note_create <- function(
 	{
 		if (file.exists(path))
 			return()
-		cat("This {scribblr} note does not exist.\n"
-			,file = stderr()
-		)
+		warn_missing_note()
 		if (!ask_yesno_qn("Should I create it?"))
 			stop("Execution aborted by user.")
 	}
