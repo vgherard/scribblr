@@ -29,9 +29,7 @@ scribblr_dir_create <- function(where = get_cur_proj()[["dir"]], check = TRUE)
 	{
 		if (dir.exists(scribblr_dir))
 			return()
-		cat("No {scribblr} directory found.\n"
-			,file = stderr()
-		)
+		warn_missing_scribblr_dir()
 		if (!ask_yesno_qn("Should I create one?"))
 			stop("Execution aborted by user.")
 	}

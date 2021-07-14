@@ -1,6 +1,9 @@
 warn_missing_note <- function()
 	cat("This {scribblr} note does not exist.", file = stderr())
 
+warn_missing_scribblr_dir <- function()
+	cat("No {scribblr} directory found.\n", file = stderr())
+
 assert_is_string <- function(x, can_be_null)
 {
 	p <- can_be_null && is.null(x)
