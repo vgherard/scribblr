@@ -193,7 +193,7 @@ scribble_init <- function(note) {
 
 
 	note_name <- basename(note_path)
-	title <- paste0("'", note_name, "'", "@ RStudio")
+	title <- paste0("'", note_name, "'", " @ RStudio")
 	if (proj[["is_r_project"]])
 		title <- paste0(title, " project '", basename(proj[["dir"]]), "'")
 
