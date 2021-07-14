@@ -1,30 +1,22 @@
-get_scribblr_path <- function()
-{
-	dir <- rstudioapi::getActiveProject()
-	is_r_project <- !is.null(dir)
-	# If there is no active project, use the R Home directory as base
-	if (!is_r_project) {
-		dir <- fs::path_home_r()
-	}
-	list(dir = dir, is_r_project = is_r_project)
-}
+warn_missing_note <- function()
+	cat("This {scribblr} note does not exist.", file = stderr())
 
-scribblr_filepath <- function(dir)
-	file.path(dir, ".scribblr")
+warn_missing_scribblr_dir <- function()
+	cat("No {scribblr} directory found.\n", file = stderr())
 
-check_scribblr_file <- function(dir)
+assert_is_string <- function(x, can_be_null)
 {
-	filepath <- scribblr_filepath(dir)
-	if (file.exists(filepath))
-		return(TRUE)
-	cat("No {scribblr} file found at:\n", filepath, "\n")
-	if ( !ask_yesno_qn("Do you want to create one?") )
-		return(FALSE)
-	file.create(filepath)
-	cat("A new {scribblr} note file was created at:\n", filepath, "\n")
-	if (file.exists( file.path(dir, ".Rbuildignore") ))
-		usethis::use_build_ignore(".scribblr")
-	return(TRUE)
+	p <- can_be_null && is.null(x)
+	q <- is.character(x) && length(x) == 1 && !is.na(x)
+	if (p || q) return()
+
+	what <- paste0("'", deparse(substitute(x)), "'")
+	msg <- paste0(
+		what, " must be", ifelse(can_be_null, " either NULL or ", " "),
+		"a length one character (not NA)."
+		)
+
+	stop(msg)
 }
 
 ask_yesno_qn <- function(qn) {
