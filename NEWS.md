@@ -1,3 +1,14 @@
+# scribblr 0.1.0
+
+### New features
+
+- Add support for multiple notes
+
+### Backward incompatible changes
+
+- `scribblr` notes and settings are now stored in the ".scribblr" directory 
+under the project's root (previously this was a single ".scribblr" text file).
+
 # scribblr 0.0.4
 
 ### New features
