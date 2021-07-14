@@ -63,5 +63,5 @@ scribblr_list <- function() {
 
 	path <- file.path(scribblr_dir(), "notes")
 
-	basename(fs::dir_ls(path))
+	basename(fs::dir_ls(path, type = "directory"))
 }
