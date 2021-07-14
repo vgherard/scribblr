@@ -75,7 +75,7 @@ scribble <- function(note = NULL) {
 					inputId = "noteIO",
 					label = NULL,
 					value = data[["txt"]],
-					placeholder = scribblr_placeholder(),
+					placeholder = scribblr_placeholder(note),
 					width = "100%",
 					height = "280px"
 				)
