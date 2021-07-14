@@ -43,7 +43,7 @@ scribblr_dir_create <- function(where = get_cur_proj()[["dir"]], check = TRUE)
 		usethis::use_build_ignore(scribblr_dir_name())
 }
 
-scribblr_note_path <- function(where = get_cur_proj()[["dir"]], note)
+scribblr_note_path <- function(note, where = get_cur_proj()[["dir"]])
 {
 	if (is.null(note))
 		return(file.path(scribblr_dir(where), "notes", main_note_name()))
