@@ -19,18 +19,25 @@
 #' @author Valerio Gherardi
 #'
 #' @description Opens the \code{scribblr} note editor in a new window.
+#' @param note
 #' @details
 #' \code{scribblr} integrates a minimalist note editor within RStudio,
 #' useful for taking quick project-related notes without distractions.
-#' \code{scribblr} notes are RStudio project aware: each
-#' project has associated its own note file, which can be
-#' read and modified by calling \code{scribble()} from an RStudio session with
-#' the active project. If \code{scribble()} is called during a session without
-#' any active project, a global note file (located at the R home directory) is
-#' accessed.
+#' \code{scribblr} notes are RStudio project aware: each project has associated
+#' its own notes, which can be accessed by calling \code{scribble()}, and are
+#' stored into the project's root directory. Using \code{scribble()} without
+#' any active project will take the R home directory as root.
 #'
-#' Calling \code{scribble()} opens the \code{scribblr} project notes editor
-#' in a new window. Notes are autosaved when the editor is closed; until that
+#' Calling \code{scribble()} with the default \code{note = NULL} gives access to
+#' the main project notes. Otherwise, \code{note} must be a string specifying a
+#' valid filename.
+#'
+#' \code{scribblr} notes and settings for the active project are stored in the
+#' \code{".scribblr"} directory, under the project's root. If this, or the note
+#' specified by \code{note}, do not exist, the user will be prompted for
+#' permission to create the required files/directories.
+#'
+#' Notes are autosaved when the editor is closed; until that
 #' moment, the R session will remain busy.
 #'
 #' \code{scribble()} can also be called (and, in particular, associated a
