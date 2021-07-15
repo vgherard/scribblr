@@ -128,6 +128,10 @@ scribble <- function(note = NULL) {
 					   c("ctrl+e", "command+e"),
 					   global = TRUE
 					   )
+			# ,keys::keysInput("saveToFileKeys",
+			# 				 c("ctrl+e+f", "command+e+f"),
+			# 				 global = TRUE
+			# )
 			# ,actionButton(
 			# 	inputId = "saveToFileButton",
 			# 	label = "Save to file (Ctrl+S)",
@@ -214,25 +218,22 @@ scribble <- function(note = NULL) {
 			}, ignoreInit = TRUE)
 
 		observeEvent(input$saveToFileButton, {
-				try({
-					write(input$noteIO, file.choose(new = T), append = F)
-					}, silent = TRUE)
-				session$sendCustomMessage("focus", list(NULL)) # refocus text
-			}, ignoreInit = TRUE)
-
-		observeEvent(input$saveToFileButton, {
 			try({
 				write(input$noteIO, file.choose(new = T), append = F)
 			}, silent = TRUE)
 			session$sendCustomMessage("focus", list(NULL)) # refocus text
 		}, ignoreInit = TRUE)
 
+		observeEvent(input$ghIssueButton, {
+			title <- ifelse(!is.null(note), note, "")
+			post_github_issue(title = title, body = input$noteIO)
+			session$sendCustomMessage("focus", list(NULL)) # refocus text
+		}, ignoreInit = TRUE)
 
-
-
+		# Done
 		observeEvent(input$doneButton, {
 			write(input$noteIO, data[["note_path"]], append = F)
-			invisible(stopApp())
+			stopApp()
 		}, ignoreInit = TRUE)
 
 	}
