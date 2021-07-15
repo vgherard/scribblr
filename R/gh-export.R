@@ -1,12 +1,11 @@
 post_github_issue <- function(title, body) {
 
 	ght <- gh::gh_tree_remote()
+	title <- URLencode(title)
+	body <- URLencode(body)
 
-	ep <- sprintf("POST /repos/%s/%s/issues", ght[["username"]], ght[["repo"]])
-	gh::gh(
-		endpoint = ep,
-		title = "Issue title",
-		body = "Some text"
-	)
+	url <- sprintf("https://github.com/%s/%s/issues/new?title=%s&body=%s",
+				   ght[["username"]], ght[["repo"]], title, body)
+	browseURL(url)
 
 }
