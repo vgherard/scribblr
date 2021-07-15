@@ -19,18 +19,27 @@
 #' @author Valerio Gherardi
 #'
 #' @description Opens the \code{scribblr} note editor in a new window.
+#' @param note either \code{NULL}, or a length one character (not \code{NA}).
+#' See details.
+#' @return returns \code{NULL}, invisibly. Called for side-effects.
 #' @details
 #' \code{scribblr} integrates a minimalist note editor within RStudio,
 #' useful for taking quick project-related notes without distractions.
-#' \code{scribblr} notes are RStudio project aware: each
-#' project has associated its own note file, which can be
-#' read and modified by calling \code{scribble()} from an RStudio session with
-#' the active project. If \code{scribble()} is called during a session without
-#' any active project, a global note file (located at the R home directory) is
-#' accessed.
+#' \code{scribblr} notes are RStudio project aware: each project has associated
+#' its own notes, which can be accessed by calling \code{scribble()}, and are
+#' stored into the project's root directory. Using \code{scribble()} without
+#' any active project will take the R home directory as root.
 #'
-#' Calling \code{scribble()} opens the \code{scribblr} project notes editor
-#' in a new window. Notes are autosaved when the editor is closed; until that
+#' Calling \code{scribble()} with the default \code{note = NULL} gives access to
+#' the main project notes. Otherwise, \code{note} must be a string specifying a
+#' valid filename.
+#'
+#' \code{scribblr} notes and settings for the active project are stored in the
+#' \code{".scribblr"} directory, under the project's root. If this, or the note
+#' specified by \code{note}, do not exist, the user will be prompted for
+#' permission to create the required files/directories.
+#'
+#' Notes are autosaved when the editor is closed; until that
 #' moment, the R session will remain busy.
 #'
 #' \code{scribble()} can also be called (and, in particular, associated a
@@ -40,25 +49,10 @@
 #' scribble()
 #' }
 #' @export
-scribble <- function() {
-	path <- get_scribblr_path()
-	dir <- path[["dir"]]
-	if (!check_scribblr_file(dir)) {
-		message("Execution aborted by user.")
-		return(invisible(NULL))
-	}
-	filepath <- scribblr_filepath(dir)
-
-	txt <- paste0(readLines(filepath), collapse = "\n")
-
-	title <- "Notes for RStudio"
-	if (path[["is_r_project"]])
-		title <- paste(title, "project at", dir)
-
-	ver <- packageVersion("scribblr")
+scribble <- function(note = NULL) {
+	data <- scribble_init(note)
 
 	#------------------------------------------------------------ User Interface
-	addResourcePath("img", system.file("img", package = "scribblr"))
 	ui <- miniPage(
 		keys::useKeys()
 		,shinyjs::useShinyjs()
@@ -75,7 +69,7 @@ scribble <- function() {
 			')))
 
 		,gadgetTitleBar(
-			title,
+			data[["title"]],
 			left = img(src = "img/logo.png", width = 39),
 			right = miniTitleBarCancelButton(
 				inputId = "doneButton", label = "Done (Esc)"
@@ -89,8 +83,8 @@ scribble <- function() {
 				textAreaInput(
 					inputId = "noteIO",
 					label = NULL,
-					value = txt,
-					placeholder = scribblr_placeholder(),
+					value = data[["txt"]],
+					placeholder = scribblr_placeholder(note),
 					width = "100%",
 					height = "280px"
 				)
@@ -128,7 +122,7 @@ scribble <- function() {
 
 		,a(
 			align = "center",
-			paste0("{scribblr} v", ver),
+			paste0("{scribblr} v", data[["ver"]]),
 			icon("github fa-1x"),
 			href = "https://github.com/vgherard/scribblr"
 		)
@@ -177,7 +171,7 @@ scribble <- function() {
 		}, ignoreInit = TRUE)
 
 		observeEvent(input$doneButton, {
-			write(input$noteIO, filepath, append = F)
+			write(input$noteIO, data[["note_path"]], append = F)
 			invisible(stopApp())
 		}, ignoreInit = TRUE)
 
@@ -187,4 +181,27 @@ scribble <- function() {
 	#------------------------------------------------------------------- Run App
 	viewer <- dialogViewer(dialogName = "scribblr", width = 800, height = 600)
 	runGadget(ui, server, viewer = viewer, stopOnCancel = FALSE)
+}
+
+scribble_init <- function(note) {
+	scribblr_dir_create(check = TRUE)
+	scribblr_note_create(note = note, check = TRUE)
+
+	proj <- get_cur_proj()
+	note_path <- scribblr_note_path(note = note)
+	txt <- paste0(readLines(note_path), collapse = "\n")
+
+
+	note_name <- basename(note_path)
+	title <- paste0("'", note_name, "'", " @ RStudio")
+	if (proj[["is_r_project"]])
+		title <- paste0(title, " project '", basename(proj[["dir"]]), "'")
+
+	ver <- packageVersion("scribblr")
+
+	addResourcePath("img", system.file("img", package = "scribblr"))
+
+	list(
+		note = note, note_path = note_path, txt = txt, title = title, ver = ver
+		)
 }
