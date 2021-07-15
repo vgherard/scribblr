@@ -115,7 +115,7 @@ scribble <- function(note = NULL) {
 			right = miniTitleBarCancelButton(
 				inputId = "doneButton", label = "Done (Esc)"
 				)
-		)
+		) # gadgetTitleBar
 
 		# Text/preview area
 		,miniTabstripPanel(
@@ -186,11 +186,9 @@ scribble <- function(note = NULL) {
 					)
 				)
 
+			) # About miniTabPanel
 
-
-			)
-
-		)
+		) # miniTabstripPanel
 	)
 
 	#-------------------------------------------------------------------- Server
@@ -218,14 +216,18 @@ scribble <- function(note = NULL) {
 		});"))
 
 		# Edit note
-
 		observeEvent(
 			input$editKeys, {
 			updateTabsetPanel(
 				session, "textAreaTabPanel", selected = "Edit (Ctrl+E)"
 			)
-			session$sendCustomMessage("focus", list("noteIO"))
-			}, ignoreInit = TRUE
+			}, ignoreInit = TRUE, priority = 1
+		)
+		observeEvent(
+			input$textAreaTabPanel, {
+				if (input$textAreaTabPanel == "Edit (Ctrl+E)")
+					session$sendCustomMessage("focus", list("noteIO"))
+			}, ignoreInit = TRUE, priority = 0
 		)
 
 
