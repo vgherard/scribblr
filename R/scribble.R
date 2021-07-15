@@ -71,6 +71,7 @@ scribble <- function(note = NULL) {
 		,gadgetTitleBar(
 			data[["title"]],
 			left = img(src = "img/logo.png", width = 39),
+
 			right = miniTitleBarCancelButton(
 				inputId = "doneButton", label = "Done (Esc)"
 				)
@@ -97,26 +98,63 @@ scribble <- function(note = NULL) {
 
 		)
 
-		,miniButtonBlock(
-
-			keys::keysInput("previewKeys",
+		,fillRow(height = "10%"
+			,keys::keysInput("previewKeys",
 				c("ctrl+p", "command+p"),
 				global = TRUE
 			)
-			,actionButton(
+			,materialSwitch(
 				inputId = "previewButton",
-				label = "Toggle preview (Ctrl+P)",
-				icon = icon("markdown")
+				label = "Preview (Ctrl+P)",
+				value = FALSE,
+				status = "primary",
+				inline = T
 			)
 
-			,keys::keysInput("saveToFileKeys",
-					   c("ctrl+s", "command+s"),
+
+
+			# ,switchInput(
+			# 	inputId = "previewButton"
+			# 	,label = icon("markdown")
+			# 	#,size = "mini"
+			# 	)
+			# ,actionButton(
+			# 	inputId = "previewButton",
+			# 	label = "Toggle preview (Ctrl+P)",
+			# 	icon = icon("markdown")
+			# )
+
+			,keys::keysInput("exportKeys",
+					   c("ctrl+e", "command+e"),
 					   global = TRUE
 					   )
-			,actionButton(
-				inputId = "saveToFileButton",
-				label = "Save to file (Ctrl+S)",
-				icon = icon("save")
+			# ,actionButton(
+			# 	inputId = "saveToFileButton",
+			# 	label = "Save to file (Ctrl+S)",
+			# 	icon = icon("save")
+			# )
+			,dropdownButton(
+				inputId = "exportDropdown",
+				label = "Export...",
+				icon = icon("sliders"),
+				status = "primary",
+				circle = FALSE,
+				up = TRUE,
+				right = TRUE,
+				actionBttn(
+					inputId = "saveToFileButton",
+					label = "...to file",
+					icon = icon("save"),
+					style = "fill",
+					size = "xs"
+				),
+				actionBttn(
+					inputId = "ghIssueButton",
+					label = "...to GitHub Issues",
+					icon = icon("github"),
+					style = "fill",
+					size = "xs"
+				)
 			)
 		)
 
@@ -130,7 +168,13 @@ scribble <- function(note = NULL) {
 
 	#-------------------------------------------------------------------- Server
 	server <- function(input, output, session) {
-		### c.f. https://stackoverflow.com/questions/6140632/
+		# Set focus on text area on load
+		observeEvent(input$loaded, {
+			session$sendCustomMessage("focus", list(NULL))
+		})
+
+		# Use tab to indent in text area
+		# See https://stackoverflow.com/questions/6140632/
 		observe(shinyjs::runjs("
 			document.getElementById('noteIO').addEventListener('keydown',
 			function(e) {
@@ -146,29 +190,45 @@ scribble <- function(note = NULL) {
 			}
 		});"))
 
-		# Set focus on text area on load
-		observeEvent(input$loaded, {
-			session$sendCustomMessage("focus", list(NULL))
-		})
 
-		observeEvent(
-			list(input$saveToFileKeys, input$saveToFileButton),
-		{
-			try({
-				write(input$noteIO, file.choose(new = T), append = F)
-			}, silent = TRUE)
-			session$sendCustomMessage("focus", list(NULL)) # refocus text area
-		}, ignoreInit = TRUE)
-
+		# Markdown preview
 		output$preview <- renderUI(markdown(input$noteIO))
 		observeEvent(
 			input$previewKeys,
 			shinyjs::click("previewButton"),
 			ignoreInit = TRUE
-			)
+		)
 		observeEvent(input$previewButton, {
 			session$sendCustomMessage("focus", list(NULL))  # refocus text area
 		}, ignoreInit = TRUE)
+
+
+		# Export dropdown menu
+		observeEvent(input$exportKeys, {
+			toggleDropdownButton(inputId = "exportDropdown", session = session)
+			}, ignoreInit = TRUE)
+
+		observeEvent(input$exportDropdown_state, {
+			if (!input$exportDropdown_state)
+				session$sendCustomMessage("focus", list(NULL))
+			}, ignoreInit = TRUE)
+
+		observeEvent(input$saveToFileButton, {
+				try({
+					write(input$noteIO, file.choose(new = T), append = F)
+					}, silent = TRUE)
+				session$sendCustomMessage("focus", list(NULL)) # refocus text
+			}, ignoreInit = TRUE)
+
+		observeEvent(input$saveToFileButton, {
+			try({
+				write(input$noteIO, file.choose(new = T), append = F)
+			}, silent = TRUE)
+			session$sendCustomMessage("focus", list(NULL)) # refocus text
+		}, ignoreInit = TRUE)
+
+
+
 
 		observeEvent(input$doneButton, {
 			write(input$noteIO, data[["note_path"]], append = F)

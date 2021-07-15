@@ -21,5 +21,6 @@ Imports:
   fs,
   usethis,
   keys,
-  gh
+  gh,
+  shinyWidgets
 BugReports: https://github.com/vgherard/scribblr/issues
