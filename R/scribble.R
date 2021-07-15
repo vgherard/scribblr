@@ -54,100 +54,52 @@ scribble <- function(note = NULL) {
 
 	#------------------------------------------------------------ User Interface
 	ui <- miniPage(
-		keys::useKeys()
+		NULL
+
+		# Plugins
 		,shinyjs::useShinyjs()
+		,keys::useKeys()
 
 		# Set focus on text area input
 		,tags$head(tags$script(HTML('
 			$(document).on("shiny:connected", function(){
 				Shiny.setInputValue("loaded", 1);
 				Shiny.addCustomMessageHandler("focus",
-					function(NULL) {
-						document.getElementById("noteIO").focus();
+					function(el) {
+						document.getElementById(el).focus();
 						})
 				});
 			')))
 
+		# Hotkeys
+		,keys::keysInput("sendKeys",
+						 c("ctrl+s", "command+s"),
+						 global = TRUE
+		)
+		,keys::keysInput("previewKeys",
+						c("ctrl+p", "command+p"),
+						global = TRUE
+		)
+		,keys::keysInput("editKeys",
+						 c("ctrl+e", "command+e"),
+						 global = TRUE
+		)
+
+
+		# Title bar
 		,gadgetTitleBar(
 			data[["title"]],
-			left = img(src = "img/logo.png", width = 39),
-
-			right = miniTitleBarCancelButton(
-				inputId = "doneButton", label = "Done (Esc)"
-				)
-		)
-
-		,miniContentPanel(
-
-			conditionalPanel(
-				condition = "input.previewButton % 2 == 0",
-				textAreaInput(
-					inputId = "noteIO",
-					label = NULL,
-					value = data[["txt"]],
-					placeholder = scribblr_placeholder(note),
-					width = "100%",
-					height = "280px"
-				)
-			)
-
-			,conditionalPanel(
-				condition = "input.previewButton % 2 == 1",
-				uiOutput("preview")
-			)
-
-		)
-
-		,fillRow(height = "10%"
-			,keys::keysInput("previewKeys",
-				c("ctrl+p", "command+p"),
-				global = TRUE
-			)
-			,materialSwitch(
-				inputId = "previewButton",
-				label = "Preview (Ctrl+P)",
-				value = FALSE,
-				status = "primary",
-				inline = T
-			)
-
-
-
-			# ,switchInput(
-			# 	inputId = "previewButton"
-			# 	,label = icon("markdown")
-			# 	#,size = "mini"
-			# 	)
-			# ,actionButton(
-			# 	inputId = "previewButton",
-			# 	label = "Toggle preview (Ctrl+P)",
-			# 	icon = icon("markdown")
-			# )
-
-			,keys::keysInput("exportKeys",
-					   c("ctrl+e", "command+e"),
-					   global = TRUE
-					   )
-			# ,keys::keysInput("saveToFileKeys",
-			# 				 c("ctrl+e+f", "command+e+f"),
-			# 				 global = TRUE
-			# )
-			# ,actionButton(
-			# 	inputId = "saveToFileButton",
-			# 	label = "Save to file (Ctrl+S)",
-			# 	icon = icon("save")
-			# )
-			,dropdownButton(
-				inputId = "exportDropdown",
-				label = "Export...",
-				icon = icon("sliders"),
+			left = dropdownButton(
+				inputId = "sendDropdown",
+				label = "Send... (Ctrl+S[+Tab])",
+				icon = icon("share"),
 				status = "primary",
 				circle = FALSE,
-				up = TRUE,
-				right = TRUE,
+				up = FALSE,
+				right = FALSE,
 				actionBttn(
 					inputId = "saveToFileButton",
-					label = "...to file",
+					label = "...to File",
 					icon = icon("save"),
 					style = "fill",
 					size = "xs"
@@ -159,14 +111,85 @@ scribble <- function(note = NULL) {
 					style = "fill",
 					size = "xs"
 				)
-			)
+			),
+			right = miniTitleBarCancelButton(
+				inputId = "doneButton", label = "Done (Esc)"
+				)
 		)
 
-		,a(
-			align = "center",
-			paste0("{scribblr} v", data[["ver"]]),
-			icon("github fa-1x"),
-			href = "https://github.com/vgherard/scribblr"
+		# Text/preview area
+		,miniTabstripPanel(
+			id = "textAreaTabPanel",
+			miniTabPanel(
+				"Edit (Ctrl+E)", icon = icon("edit"),
+				textAreaInput(
+					inputId = "noteIO",
+					label = NULL,
+					value = data[["txt"]],
+					placeholder = scribblr_placeholder(note),
+					width = "100%",
+					height = "310px"
+				)
+			),
+			miniTabPanel(
+				"Preview (Ctrl+P)", icon = icon("markdown"),
+				uiOutput("preview")
+			),
+			miniTabPanel(
+				"About", icon = icon("info-circle"),
+				sidebarLayout(
+					sidebarPanel = sidebarPanel(
+						NULL
+						,br()
+						,img(src = "img/logo.png", width = 200)
+					),
+					mainPanel = mainPanel(
+						NULL
+						,h2(paste0("{scribblr} v", data[["ver"]]),
+							align = "center"
+							)
+						,p("Author: Valerio Gherardi",
+						   a("vgherard@sissa.it",
+						     href = "mailto:vgherard@sissa.it"
+						     ),
+						   align = "center"
+						   )
+
+						# Links and share
+						,br()
+						,fluidRow(
+							NULL
+							,column(
+								5, offset = 1
+								,h4(icon("link"), "Links")
+								,a(icon("github fa-1x"), "GitHub",
+								   href = "https://github.com/vgherard/scribblr"
+								)
+								,br()
+								,a(icon("bug fa-1x"), "Bug Reports",
+								   href = "https://github.com/vgherard/scribblr/issues"
+								)
+							)
+							,column(
+								5, offset = 1
+								,h4(icon("share-alt"), "Share")
+								,a(icon("twitter fa-1x"), "Twitter",
+								   href = "https://twitter.com/intent/tweet?text={scribblr}:%20A%20Minimalist%20Notepad%20Inside%20RStudio&url=https://github.com/vgherard/scribblr&via=ValerioGherardi&hashtags=rstats,rstudio,productivity"
+								)
+								,br()
+								,a(icon("linkedin fa-1x"), "LinkedIn",
+								   href = "https://www.linkedin.com/sharing/share-offsite/?url=https://github.com/vgherard/scribblr"
+								)
+							)
+						)
+
+					)
+				)
+
+
+
+			)
+
 		)
 	)
 
@@ -174,7 +197,7 @@ scribble <- function(note = NULL) {
 	server <- function(input, output, session) {
 		# Set focus on text area on load
 		observeEvent(input$loaded, {
-			session$sendCustomMessage("focus", list(NULL))
+			session$sendCustomMessage("focus", list("noteIO"))
 		})
 
 		# Use tab to indent in text area
@@ -194,40 +217,51 @@ scribble <- function(note = NULL) {
 			}
 		});"))
 
+		# Edit note
+
+		observeEvent(
+			input$editKeys, {
+			updateTabsetPanel(
+				session, "textAreaTabPanel", selected = "Edit (Ctrl+E)"
+			)
+			session$sendCustomMessage("focus", list("noteIO"))
+			}, ignoreInit = TRUE
+		)
+
 
 		# Markdown preview
 		output$preview <- renderUI(markdown(input$noteIO))
 		observeEvent(
-			input$previewKeys,
-			shinyjs::click("previewButton"),
-			ignoreInit = TRUE
-		)
-		observeEvent(input$previewButton, {
-			session$sendCustomMessage("focus", list(NULL))  # refocus text area
-		}, ignoreInit = TRUE)
+			input$previewKeys, {
+				updateTabsetPanel(
+					session, "textAreaTabPanel", selected = "Preview (Ctrl+P)"
+					)
+			}, ignoreInit = TRUE)
 
 
 		# Export dropdown menu
-		observeEvent(input$exportKeys, {
-			toggleDropdownButton(inputId = "exportDropdown", session = session)
+		observeEvent(input$sendKeys, {
+			toggleDropdownButton(inputId = "sendDropdown", session = session)
 			}, ignoreInit = TRUE)
 
-		observeEvent(input$exportDropdown_state, {
-			if (!input$exportDropdown_state)
-				session$sendCustomMessage("focus", list(NULL))
+		observeEvent(input$sendDropdown_state, {
+			if (input$sendDropdown_state)
+				session$sendCustomMessage("focus", list("saveToFileButton"))
+			else
+				session$sendCustomMessage("focus", list("noteIO"))
 			}, ignoreInit = TRUE)
 
 		observeEvent(input$saveToFileButton, {
 			try({
 				write(input$noteIO, file.choose(new = T), append = F)
 			}, silent = TRUE)
-			session$sendCustomMessage("focus", list(NULL)) # refocus text
+			session$sendCustomMessage("focus", list("noteIO")) # refocus text
 		}, ignoreInit = TRUE)
 
 		observeEvent(input$ghIssueButton, {
 			title <- ifelse(!is.null(note), note, "")
 			post_github_issue(title = title, body = input$noteIO)
-			session$sendCustomMessage("focus", list(NULL)) # refocus text
+			session$sendCustomMessage("focus", list("noteIO")) # refocus text
 		}, ignoreInit = TRUE)
 
 		# Done
