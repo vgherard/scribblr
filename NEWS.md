@@ -1,3 +1,14 @@
+# scribblr 0.2.0
+
+### New features
+
+- Support for exporting notes as GitHub Issues
+
+### UI changes
+
+- New tabstrip interface
+- Added "About" tab
+
 # scribblr 0.1.0
 
 ### New features

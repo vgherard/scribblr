@@ -7,4 +7,5 @@
 ## usethis namespace: end
 #' @import shiny
 #' @import miniUI
+#' @import shinyWidgets
 NULL
