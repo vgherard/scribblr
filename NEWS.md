@@ -1,5 +1,10 @@
 # scribblr (development version)
 
+### Fixes
+
+- Pressing Tab in text area is now undoable (with Ctrl+Z) (#19)
+- Added instructions to install from my R-universe in README (#13)
+
 # scribblr 0.2.0
 
 ### New features
