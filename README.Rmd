@@ -32,7 +32,15 @@ Key features:
 
 ## Installation
 
-You can install the development version of \code{scribblr} from [GitHub](https://github.com/) with:
+`scribblr` is not yet available on CRAN. In the meanwhile, you can install 
+the development version from 
+[my R-universe repository](https://vgherard.r-universe.dev/), with:
+
+``` r
+install.packages("scribblr", repos = "https://vgherard.r-universe.dev")
+```
+
+or equivalently from [GitHub](https://github.com/vgherard/scribblr) with:
 
 ``` r
 # install.packages("devtools")
