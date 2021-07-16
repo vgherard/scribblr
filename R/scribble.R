@@ -208,10 +208,11 @@ scribble <- function(note = NULL) {
     				var start = this.selectionStart;
     				var end = this.selectionEnd;
 
-    				this.value = this.value.substring(0, start) +
-    					\"\t\" + this.value.substring(end);
+					const TAB_SIZE = 4;
 
-    				this.selectionStart = this.selectionEnd = start + 1;
+        			// The one-liner that does the magic
+        			document.execCommand('insertText', false, ' '.repeat(TAB_SIZE));
+					return;
 			}
 		});"))
 
