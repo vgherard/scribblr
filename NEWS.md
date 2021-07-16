@@ -4,6 +4,10 @@
 
 - Pressing Tab in text area is now undoable (with Ctrl+Z) (#19)
 - Added instructions to install from my R-universe in README (#13)
+- Import `utils`.
+
+### Testing
+- Added `testthat` infrastructure.
 
 # scribblr 0.2.0
 

@@ -50,6 +50,8 @@
 #' }
 #' @export
 scribble <- function(note = NULL) {
+	assert_rs_is_available()
+
 	data <- scribble_init(note)
 
 	#------------------------------------------------------------ User Interface
@@ -77,8 +79,8 @@ scribble <- function(note = NULL) {
 						 global = TRUE
 		)
 		,keys::keysInput("previewKeys",
-						c("ctrl+p", "command+p"),
-						global = TRUE
+						 c("ctrl+p", "command+p"),
+						 global = TRUE
 		)
 		,keys::keysInput("editKeys",
 						 c("ctrl+e", "command+e"),
@@ -114,7 +116,7 @@ scribble <- function(note = NULL) {
 			),
 			right = miniTitleBarCancelButton(
 				inputId = "doneButton", label = "Done (Esc)"
-				)
+			)
 		) # gadgetTitleBar
 
 		# Text/preview area
@@ -147,13 +149,13 @@ scribble <- function(note = NULL) {
 						NULL
 						,h2(paste0("{scribblr} v", data[["ver"]]),
 							align = "center"
-							)
+						)
 						,p("Author: Valerio Gherardi",
 						   a("vgherard@sissa.it",
 						     href = "mailto:vgherard@sissa.it"
-						     ),
+						   ),
 						   align = "center"
-						   )
+						)
 
 						# Links and share
 						,br()
@@ -219,9 +221,9 @@ scribble <- function(note = NULL) {
 		# Edit note
 		observeEvent(
 			input$editKeys, {
-			updateTabsetPanel(
-				session, "textAreaTabPanel", selected = "Edit (Ctrl+E)"
-			)
+				updateTabsetPanel(
+					session, "textAreaTabPanel", selected = "Edit (Ctrl+E)"
+				)
 			}, ignoreInit = TRUE, priority = 1
 		)
 		observeEvent(
@@ -238,21 +240,21 @@ scribble <- function(note = NULL) {
 			input$previewKeys, {
 				updateTabsetPanel(
 					session, "textAreaTabPanel", selected = "Preview (Ctrl+P)"
-					)
+				)
 			}, ignoreInit = TRUE)
 
 
 		# Export dropdown menu
 		observeEvent(input$sendKeys, {
 			toggleDropdownButton(inputId = "sendDropdown", session = session)
-			}, ignoreInit = TRUE)
+		}, ignoreInit = TRUE)
 
 		observeEvent(input$sendDropdown_state, {
 			if (input$sendDropdown_state)
 				session$sendCustomMessage("focus", list("saveToFileButton"))
 			else
 				session$sendCustomMessage("focus", list("noteIO"))
-			}, ignoreInit = TRUE)
+		}, ignoreInit = TRUE)
 
 		observeEvent(input$saveToFileButton, {
 			try({
@@ -301,5 +303,5 @@ scribble_init <- function(note) {
 
 	list(
 		note = note, note_path = note_path, txt = txt, title = title, ver = ver
-		)
+	)
 }

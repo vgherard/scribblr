@@ -1,3 +1,19 @@
+# scribblr
+# Copyright (C) 2021  Valerio Gherardi
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
 warn_missing_note <- function()
 	cat("This {scribblr} note does not exist.", file = stderr())
 
@@ -17,6 +33,16 @@ assert_is_string <- function(x, can_be_null)
 		)
 
 	stop(msg)
+}
+
+assert_rs_is_available <- function(
+	msg = paste0("`", deparse(sys.calls()[[sys.nframe() - 1]]), "`", # function name
+				 "can only be used inside RStudio."
+				 )
+)
+{
+	if (!rstudioapi::isAvailable())
+		rlang::abort(msg, class = "rs_not_available_error")
 }
 
 ask_yesno_qn <- function(qn) {
