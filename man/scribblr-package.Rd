@@ -8,7 +8,7 @@
 \description{
 \if{html}{\figure{logo.png}{options: align='right' alt='logo' width='120'}}
 
-a project aware notepad inside RStudio, for taking quick project-related notes without distractions.
+a project aware notepad inside RStudio, for taking quick project-related notes without distractions. RStudio addin.
 }
 \seealso{
 Useful links:

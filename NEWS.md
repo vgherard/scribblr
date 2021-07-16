@@ -2,9 +2,10 @@
 
 ### Fixes
 
-- Pressing Tab in text area is now undoable (with Ctrl+Z) (#19)
+- Indenting with Tab in text area is now undo-able (with Ctrl+Z) (#19)
 - Added instructions to install from my R-universe in README (#13)
 - Import `utils`.
+- Fix encoding of reserved symbols (e.g. `#`) in URL queries for exporting notes as GitHub issues. 
 
 ### Testing
 - Added `testthat` infrastructure.
