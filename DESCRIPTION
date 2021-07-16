@@ -26,5 +26,6 @@ Imports:
   utils
 BugReports: https://github.com/vgherard/scribblr/issues
 Suggests: 
+    covr,
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
