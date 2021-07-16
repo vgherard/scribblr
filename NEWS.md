@@ -1,3 +1,32 @@
+# scribblr (development version)
+
+### Fixes
+
+- Pressing Tab in text area is now undoable (with Ctrl+Z) (#19)
+- Added instructions to install from my R-universe in README (#13)
+
+# scribblr 0.2.0
+
+### New features
+
+- Support for exporting notes as GitHub Issues
+
+### UI changes
+
+- New tabstrip interface
+- Added "About" tab
+
+# scribblr 0.1.0
+
+### New features
+
+- Add support for multiple notes
+
+### Backward incompatible changes
+
+- `scribblr` notes and settings are now stored in the ".scribblr" directory 
+under the project's root (previously this was a single ".scribblr" text file).
+
 # scribblr 0.0.4
 
 ### New features

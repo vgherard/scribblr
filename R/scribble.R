@@ -19,18 +19,27 @@
 #' @author Valerio Gherardi
 #'
 #' @description Opens the \code{scribblr} note editor in a new window.
+#' @param note either \code{NULL}, or a length one character (not \code{NA}).
+#' See details.
+#' @return returns \code{NULL}, invisibly. Called for side-effects.
 #' @details
 #' \code{scribblr} integrates a minimalist note editor within RStudio,
 #' useful for taking quick project-related notes without distractions.
-#' \code{scribblr} notes are RStudio project aware: each
-#' project has associated its own note file, which can be
-#' read and modified by calling \code{scribble()} from an RStudio session with
-#' the active project. If \code{scribble()} is called during a session without
-#' any active project, a global note file (located at the R home directory) is
-#' accessed.
+#' \code{scribblr} notes are RStudio project aware: each project has associated
+#' its own notes, which can be accessed by calling \code{scribble()}, and are
+#' stored into the project's root directory. Using \code{scribble()} without
+#' any active project will take the R home directory as root.
 #'
-#' Calling \code{scribble()} opens the \code{scribblr} project notes editor
-#' in a new window. Notes are autosaved when the editor is closed; until that
+#' Calling \code{scribble()} with the default \code{note = NULL} gives access to
+#' the main project notes. Otherwise, \code{note} must be a string specifying a
+#' valid filename.
+#'
+#' \code{scribblr} notes and settings for the active project are stored in the
+#' \code{".scribblr"} directory, under the project's root. If this, or the note
+#' specified by \code{note}, do not exist, the user will be prompted for
+#' permission to create the required files/directories.
+#'
+#' Notes are autosaved when the editor is closed; until that
 #' moment, the R session will remain busy.
 #'
 #' \code{scribble()} can also be called (and, in particular, associated a
@@ -40,103 +49,157 @@
 #' scribble()
 #' }
 #' @export
-scribble <- function() {
-	path <- get_scribblr_path()
-	dir <- path[["dir"]]
-	if (!check_scribblr_file(dir)) {
-		message("Execution aborted by user.")
-		return(invisible(NULL))
-	}
-	filepath <- scribblr_filepath(dir)
-
-	txt <- paste0(readLines(filepath), collapse = "\n")
-
-	title <- "Notes for RStudio"
-	if (path[["is_r_project"]])
-		title <- paste(title, "project at", dir)
-
-	ver <- packageVersion("scribblr")
+scribble <- function(note = NULL) {
+	data <- scribble_init(note)
 
 	#------------------------------------------------------------ User Interface
-	addResourcePath("img", system.file("img", package = "scribblr"))
 	ui <- miniPage(
-		keys::useKeys()
+		NULL
+
+		# Plugins
 		,shinyjs::useShinyjs()
+		,keys::useKeys()
 
 		# Set focus on text area input
 		,tags$head(tags$script(HTML('
 			$(document).on("shiny:connected", function(){
 				Shiny.setInputValue("loaded", 1);
 				Shiny.addCustomMessageHandler("focus",
-					function(NULL) {
-						document.getElementById("noteIO").focus();
+					function(el) {
+						document.getElementById(el).focus();
 						})
 				});
 			')))
 
+		# Hotkeys
+		,keys::keysInput("sendKeys",
+						 c("ctrl+s", "command+s"),
+						 global = TRUE
+		)
+		,keys::keysInput("previewKeys",
+						c("ctrl+p", "command+p"),
+						global = TRUE
+		)
+		,keys::keysInput("editKeys",
+						 c("ctrl+e", "command+e"),
+						 global = TRUE
+		)
+
+
+		# Title bar
 		,gadgetTitleBar(
-			title,
-			left = img(src = "img/logo.png", width = 39),
+			data[["title"]],
+			left = dropdownButton(
+				inputId = "sendDropdown",
+				label = "Send... (Ctrl+S[+Tab])",
+				icon = icon("share"),
+				status = "primary",
+				circle = FALSE,
+				up = FALSE,
+				right = FALSE,
+				actionBttn(
+					inputId = "saveToFileButton",
+					label = "...to File",
+					icon = icon("save"),
+					style = "fill",
+					size = "xs"
+				),
+				actionBttn(
+					inputId = "ghIssueButton",
+					label = "...to GitHub Issues",
+					icon = icon("github"),
+					style = "fill",
+					size = "xs"
+				)
+			),
 			right = miniTitleBarCancelButton(
 				inputId = "doneButton", label = "Done (Esc)"
 				)
-		)
+		) # gadgetTitleBar
 
-		,miniContentPanel(
-
-			conditionalPanel(
-				condition = "input.previewButton % 2 == 0",
+		# Text/preview area
+		,miniTabstripPanel(
+			id = "textAreaTabPanel",
+			miniTabPanel(
+				"Edit (Ctrl+E)", icon = icon("edit"),
 				textAreaInput(
 					inputId = "noteIO",
 					label = NULL,
-					value = txt,
-					placeholder = scribblr_placeholder(),
+					value = data[["txt"]],
+					placeholder = scribblr_placeholder(note),
 					width = "100%",
-					height = "280px"
+					height = "310px"
 				)
-			)
-
-			,conditionalPanel(
-				condition = "input.previewButton % 2 == 1",
+			),
+			miniTabPanel(
+				"Preview (Ctrl+P)", icon = icon("markdown"),
 				uiOutput("preview")
-			)
+			),
+			miniTabPanel(
+				"About", icon = icon("info-circle"),
+				sidebarLayout(
+					sidebarPanel = sidebarPanel(
+						NULL
+						,br()
+						,img(src = "img/logo.png", width = 200)
+					),
+					mainPanel = mainPanel(
+						NULL
+						,h2(paste0("{scribblr} v", data[["ver"]]),
+							align = "center"
+							)
+						,p("Author: Valerio Gherardi",
+						   a("vgherard@sissa.it",
+						     href = "mailto:vgherard@sissa.it"
+						     ),
+						   align = "center"
+						   )
 
-		)
+						# Links and share
+						,br()
+						,fluidRow(
+							NULL
+							,column(
+								5, offset = 1
+								,h4(icon("link"), "Links")
+								,a(icon("github fa-1x"), "GitHub",
+								   href = "https://github.com/vgherard/scribblr"
+								)
+								,br()
+								,a(icon("bug fa-1x"), "Bug Reports",
+								   href = "https://github.com/vgherard/scribblr/issues"
+								)
+							)
+							,column(
+								5, offset = 1
+								,h4(icon("share-alt"), "Share")
+								,a(icon("twitter fa-1x"), "Twitter",
+								   href = "https://twitter.com/intent/tweet?text={scribblr}:%20A%20Minimalist%20Notepad%20Inside%20RStudio&url=https://github.com/vgherard/scribblr&via=ValerioGherardi&hashtags=rstats,rstudio,productivity"
+								)
+								,br()
+								,a(icon("linkedin fa-1x"), "LinkedIn",
+								   href = "https://www.linkedin.com/sharing/share-offsite/?url=https://github.com/vgherard/scribblr"
+								)
+							)
+						)
 
-		,miniButtonBlock(
+					)
+				)
 
-			keys::keysInput("previewKeys",
-				c("ctrl+p", "command+p"),
-				global = TRUE
-			)
-			,actionButton(
-				inputId = "previewButton",
-				label = "Toggle preview (Ctrl+P)",
-				icon = icon("markdown")
-			)
+			) # About miniTabPanel
 
-			,keys::keysInput("saveToFileKeys",
-					   c("ctrl+s", "command+s"),
-					   global = TRUE
-					   )
-			,actionButton(
-				inputId = "saveToFileButton",
-				label = "Save to file (Ctrl+S)",
-				icon = icon("save")
-			)
-		)
-
-		,a(
-			align = "center",
-			paste0("{scribblr} v", ver),
-			icon("github fa-1x"),
-			href = "https://github.com/vgherard/scribblr"
-		)
+		) # miniTabstripPanel
 	)
 
 	#-------------------------------------------------------------------- Server
 	server <- function(input, output, session) {
-		### c.f. https://stackoverflow.com/questions/6140632/
+		# Set focus on text area on load
+		observeEvent(input$loaded, {
+			session$sendCustomMessage("focus", list("noteIO"))
+		})
+
+		# Use tab to indent in text area
+		# See https://stackoverflow.com/questions/6140632/
 		observe(shinyjs::runjs("
 			document.getElementById('noteIO').addEventListener('keydown',
 			function(e) {
@@ -145,40 +208,69 @@ scribble <- function() {
     				var start = this.selectionStart;
     				var end = this.selectionEnd;
 
-    				this.value = this.value.substring(0, start) +
-    					\"\t\" + this.value.substring(end);
+					const TAB_SIZE = 4;
 
-    				this.selectionStart = this.selectionEnd = start + 1;
+        			// The one-liner that does the magic
+        			document.execCommand('insertText', false, ' '.repeat(TAB_SIZE));
+					return;
 			}
 		});"))
 
-		# Set focus on text area on load
-		observeEvent(input$loaded, {
-			session$sendCustomMessage("focus", list(NULL))
-		})
-
+		# Edit note
 		observeEvent(
-			list(input$saveToFileKeys, input$saveToFileButton),
-		{
+			input$editKeys, {
+			updateTabsetPanel(
+				session, "textAreaTabPanel", selected = "Edit (Ctrl+E)"
+			)
+			}, ignoreInit = TRUE, priority = 1
+		)
+		observeEvent(
+			input$textAreaTabPanel, {
+				if (input$textAreaTabPanel == "Edit (Ctrl+E)")
+					session$sendCustomMessage("focus", list("noteIO"))
+			}, ignoreInit = TRUE, priority = 0
+		)
+
+
+		# Markdown preview
+		output$preview <- renderUI(markdown(input$noteIO))
+		observeEvent(
+			input$previewKeys, {
+				updateTabsetPanel(
+					session, "textAreaTabPanel", selected = "Preview (Ctrl+P)"
+					)
+			}, ignoreInit = TRUE)
+
+
+		# Export dropdown menu
+		observeEvent(input$sendKeys, {
+			toggleDropdownButton(inputId = "sendDropdown", session = session)
+			}, ignoreInit = TRUE)
+
+		observeEvent(input$sendDropdown_state, {
+			if (input$sendDropdown_state)
+				session$sendCustomMessage("focus", list("saveToFileButton"))
+			else
+				session$sendCustomMessage("focus", list("noteIO"))
+			}, ignoreInit = TRUE)
+
+		observeEvent(input$saveToFileButton, {
 			try({
 				write(input$noteIO, file.choose(new = T), append = F)
 			}, silent = TRUE)
-			session$sendCustomMessage("focus", list(NULL)) # refocus text area
+			session$sendCustomMessage("focus", list("noteIO")) # refocus text
 		}, ignoreInit = TRUE)
 
-		output$preview <- renderUI(markdown(input$noteIO))
-		observeEvent(
-			input$previewKeys,
-			shinyjs::click("previewButton"),
-			ignoreInit = TRUE
-			)
-		observeEvent(input$previewButton, {
-			session$sendCustomMessage("focus", list(NULL))  # refocus text area
+		observeEvent(input$ghIssueButton, {
+			title <- ifelse(!is.null(note), note, "")
+			post_github_issue(title = title, body = input$noteIO)
+			session$sendCustomMessage("focus", list("noteIO")) # refocus text
 		}, ignoreInit = TRUE)
 
+		# Done
 		observeEvent(input$doneButton, {
-			write(input$noteIO, filepath, append = F)
-			invisible(stopApp())
+			write(input$noteIO, data[["note_path"]], append = F)
+			stopApp()
 		}, ignoreInit = TRUE)
 
 	}
@@ -187,4 +279,27 @@ scribble <- function() {
 	#------------------------------------------------------------------- Run App
 	viewer <- dialogViewer(dialogName = "scribblr", width = 800, height = 600)
 	runGadget(ui, server, viewer = viewer, stopOnCancel = FALSE)
+}
+
+scribble_init <- function(note) {
+	scribblr_dir_create(check = TRUE)
+	scribblr_note_create(note = note, check = TRUE)
+
+	proj <- get_cur_proj()
+	note_path <- scribblr_note_path(note = note)
+	txt <- paste0(readLines(note_path), collapse = "\n")
+
+
+	note_name <- basename(note_path)
+	title <- paste0("'", note_name, "'", " @ RStudio")
+	if (proj[["is_r_project"]])
+		title <- paste0(title, " project '", basename(proj[["dir"]]), "'")
+
+	ver <- packageVersion("scribblr")
+
+	addResourcePath("img", system.file("img", package = "scribblr"))
+
+	list(
+		note = note, note_path = note_path, txt = txt, title = title, ver = ver
+		)
 }

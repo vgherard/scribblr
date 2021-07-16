@@ -1,6 +1,6 @@
 Package: scribblr
 Title: A Minimalist Notepad Inside RStudio 
-Version: 0.0.4
+Version: 0.2.0.9000
 Authors@R: 
     person(given = "Valerio",
            family = "Gherardi",
@@ -16,11 +16,13 @@ RoxygenNote: 7.1.1
 Imports:
   shiny (>= 0.13),
   miniUI (>= 0.1.1),
-  keys,
   shinyjs,
   rstudioapi (>= 0.5),
   fs,
-  usethis
+  usethis,
+  keys,
+  gh,
+  shinyWidgets
 BugReports: https://github.com/vgherard/scribblr/issues
 Suggests: 
     testthat (>= 3.0.0)
