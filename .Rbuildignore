@@ -5,3 +5,5 @@
 ^img$
 ^\.scribblr$
 ^ignore$
+^\.github$
+^codecov\.yml$
