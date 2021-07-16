@@ -4,11 +4,11 @@
 \name{scribblr-package}
 \alias{scribblr}
 \alias{scribblr-package}
-\title{scribblr: A Minimalist Notepad Inside RStudio}
+\title{scribblr: A Notepad Inside RStudio}
 \description{
 \if{html}{\figure{logo.png}{options: align='right' alt='logo' width='120'}}
 
-a project aware notepad inside RStudio, for taking quick project-related notes without distractions. RStudio addin.
+A project aware notepad inside RStudio, for taking quick project-related notes without distractions. RStudio addin.
 }
 \seealso{
 Useful links:
