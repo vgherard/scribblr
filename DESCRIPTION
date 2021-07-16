@@ -7,7 +7,7 @@ Authors@R:
            role = c("aut", "cre"),
            email = "vgherard@sissa.it",
            comment = c(ORCID = "0000-0002-8215-3013"))
-Description: a minimalist notepad for taking project-related notes in RStudio, which can be invoked either from the console, or from the dedicated RStudio Addin.
+Description: a project aware notepad inside RStudio, for taking quick project-related notes without distractions.
 License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: true
