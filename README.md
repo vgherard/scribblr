@@ -7,6 +7,9 @@
 
 [![CRAN
 status](https://www.r-pkg.org/badges/version/scribblr)](https://CRAN.R-project.org/package=scribblr)
+[![R-CMD-check](https://github.com/vgherard/scribblr/workflows/R-CMD-check/badge.svg)](https://github.com/vgherard/scribblr/actions)
+[![Codecov test
+coverage](https://codecov.io/gh/vgherard/scribblr/branch/master/graph/badge.svg)](https://codecov.io/gh/vgherard/scribblr?branch=master)
 [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=%7Bscribblr%7D:%20A%20Minimalist%20Notepad%20Inside%20RStudio&url=https://github.com/vgherard/scribblr&via=ValerioGherardi&hashtags=rstats,rstudio,productivity)
 <!-- badges: end -->
 
