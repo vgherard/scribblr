@@ -8,4 +8,5 @@
 #' @import shiny
 #' @import miniUI
 #' @import shinyWidgets
+#' @importFrom utils URLencode browseURL packageVersion
 NULL
