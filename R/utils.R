@@ -19,6 +19,16 @@ assert_is_string <- function(x, can_be_null)
 	stop(msg)
 }
 
+assert_rs_is_available <- function(
+	msg = paste0("`", deparse(sys.calls()[[sys.nframe() - 1]]), "`", # function name
+				 "can only be used inside RStudio."
+				 )
+)
+{
+	if (!rstudioapi::isAvailable())
+		rlang::abort(msg, class = "rs_not_available_error")
+}
+
 ask_yesno_qn <- function(qn) {
 	prompt <- paste(qn, "(y/n)> ")
 	while (!is_valid_ans(ans <- readline(prompt)))

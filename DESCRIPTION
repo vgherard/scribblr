@@ -23,7 +23,8 @@ Imports:
   keys,
   gh,
   shinyWidgets,
-  utils
+  utils,
+  rlang
 BugReports: https://github.com/vgherard/scribblr/issues
 Suggests: 
     covr,

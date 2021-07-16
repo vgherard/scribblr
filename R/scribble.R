@@ -50,6 +50,8 @@
 #' }
 #' @export
 scribble <- function(note = NULL) {
+	assert_rs_is_available()
+
 	data <- scribble_init(note)
 
 	#------------------------------------------------------------ User Interface
