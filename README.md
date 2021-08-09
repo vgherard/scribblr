@@ -5,13 +5,17 @@
 
 <!-- badges: start -->
 
-[![Lifecycle:
-experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
-[![CRAN
-status](https://www.r-pkg.org/badges/version/scribblr)](https://CRAN.R-project.org/package=scribblr)
+[![Project Status: Active – The project has reached a stable, usable
+state and is being actively
+developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![R-CMD-check](https://github.com/vgherard/scribblr/workflows/R-CMD-check/badge.svg)](https://github.com/vgherard/scribblr/actions)
 [![Codecov test
 coverage](https://codecov.io/gh/vgherard/scribblr/branch/master/graph/badge.svg)](https://codecov.io/gh/vgherard/scribblr?branch=master)
+[![CRAN
+status](https://www.r-pkg.org/badges/version/scribblr)](https://CRAN.R-project.org/package=scribblr)
+[![R-universe
+status](https://vgherard.r-universe.dev/badges/scribblr)](https://vgherard.r-universe.dev/)
+[![Website](https://img.shields.io/badge/Website-here-blue)](https://vgherard.github.io/scribblr/)
 [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=%7Bscribblr%7D:%20A%20Notepad%20Inside%20RStudio&url=https://github.com/vgherard/scribblr&via=ValerioGherardi&hashtags=rstats,rstudio,productivity)
 <!-- badges: end -->
 
