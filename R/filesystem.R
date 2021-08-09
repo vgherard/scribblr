@@ -45,11 +45,11 @@ scribblr_dir_create <- function(where = get_cur_proj()[["dir"]], check = TRUE)
 
 scribblr_note_path <- function(note, where = get_cur_proj()[["dir"]])
 {
+	assert_is_note_name(note)
+
 	if (is.null(note))
 		return(file.path(scribblr_dir(where), "notes", main_note_name()))
 
-	if (!is.character(note) && length(note) == 1 && !is.na(note))
-		stop("'note' must be either NULL or a length one character (not NA).")
 	return(file.path(scribblr_dir(where), "notes", note, note))
 }
 
@@ -57,6 +57,7 @@ scribblr_note_create <- function(
 	where = get_cur_proj()[["dir"]], note, check = TRUE
 )
 {
+	assert_is_note_name(note)
 	path <- scribblr_note_path(where = where, note = note)
 
 	if (check)

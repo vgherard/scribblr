@@ -20,17 +20,33 @@ warn_missing_note <- function()
 warn_missing_scribblr_dir <- function()
 	cat("No {scribblr} directory found.\n", file = stderr())
 
-assert_is_string <- function(x, can_be_null)
+assert_is_string <- function(
+	x, can_be_null = FALSE, name = deparse(substitute(x))
+	)
 {
 	p <- can_be_null && is.null(x)
 	q <- is.character(x) && length(x) == 1 && !is.na(x)
 	if (p || q) return()
 
-	what <- paste0("'", deparse(substitute(x)), "'")
-	msg <- paste0(
-		what, " must be", ifelse(can_be_null, " either NULL or ", " "),
+	msg <- paste0("'", name, "' ",
+		"must be", ifelse(can_be_null, " either NULL or ", " "),
 		"a length one character (not NA)."
 		)
+
+	stop(msg)
+}
+
+assert_is_note_name <- function(x, name = deparse(substitute(x)))
+{
+	assert_is_string(x, can_be_null = TRUE, name = name)
+
+	if (is.null(x) || !grepl("[^[:alnum:]_.]", x))
+		return()
+
+	msg <- paste0("'", name, "' ",
+				  "can contain only alphanumeric characters, ",
+				  "underscores (_) and dots (.)"
+	)
 
 	stop(msg)
 }
