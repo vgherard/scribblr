@@ -26,6 +26,7 @@ Imports:
   utils,
   rlang
 BugReports: https://github.com/vgherard/scribblr/issues
+URL: https://vgherard.github.io/scribblr/, https://github.com/vgherard/scribblr
 Suggests: 
     covr,
     testthat (>= 3.0.0)
