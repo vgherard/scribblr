@@ -17,12 +17,17 @@ status](https://www.r-pkg.org/badges/version/scribblr)](https://CRAN.R-project.o
 status](https://vgherard.r-universe.dev/badges/scribblr)](https://vgherard.r-universe.dev/)
 [![Website](https://img.shields.io/badge/Website-here-blue)](https://vgherard.github.io/scribblr/)
 [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=%7Bscribblr%7D:%20A%20Notepad%20Inside%20RStudio&url=https://github.com/vgherard/scribblr&via=ValerioGherardi&hashtags=rstats,rstudio,productivity)
+[![R-CMD-check](https://github.com/vgherard/scribblr/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/vgherard/scribblr/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 `scribblr` is a project-aware notepad inside RStudio.
 
-![scribblr
-demonstration](https://raw.githubusercontent.com/vgherard/scribblr/master/img/scribblr.gif)
+<figure>
+<img
+src="https://raw.githubusercontent.com/vgherard/scribblr/master/img/scribblr.gif"
+alt="scribblr demonstration" />
+<figcaption aria-hidden="true">scribblr demonstration</figcaption>
+</figure>
 
 ## Installation
 
