@@ -1,4 +1,4 @@
-# scribblr (development version)
+# scribblr 0.2.1
 
 ### Fixes
 
