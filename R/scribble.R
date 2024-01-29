@@ -151,8 +151,8 @@ scribble <- function(note = NULL) {
 							align = "center"
 						)
 						,p("Author: Valerio Gherardi",
-						   a("vgherard@sissa.it",
-						     href = "mailto:vgherard@sissa.it"
+						   a("vgherard840@gmail.com",
+						     href = "mailto:vgherard840@gmail.com"
 						   ),
 						   align = "center"
 						)
@@ -164,22 +164,22 @@ scribble <- function(note = NULL) {
 							,column(
 								5, offset = 1
 								,h4(icon("link"), "Links")
-								,a(icon("github fa-1x"), "GitHub",
+								,a(icon("github"), "GitHub",
 								   href = "https://github.com/vgherard/scribblr"
 								)
 								,br()
-								,a(icon("bug fa-1x"), "Bug Reports",
+								,a(icon("bug"), "Bug Reports",
 								   href = "https://github.com/vgherard/scribblr/issues"
 								)
 							)
 							,column(
 								5, offset = 1
 								,h4(icon("share-alt"), "Share")
-								,a(icon("twitter fa-1x"), "Twitter",
+								,a(icon("twitter"), "Twitter",
 								   href = "https://twitter.com/intent/tweet?text={scribblr}:%20A%20Minimalist%20Notepad%20Inside%20RStudio&url=https://github.com/vgherard/scribblr&via=ValerioGherardi&hashtags=rstats,rstudio,productivity"
 								)
 								,br()
-								,a(icon("linkedin fa-1x"), "LinkedIn",
+								,a(icon("linkedin"), "LinkedIn",
 								   href = "https://www.linkedin.com/sharing/share-offsite/?url=https://github.com/vgherard/scribblr"
 								)
 							)

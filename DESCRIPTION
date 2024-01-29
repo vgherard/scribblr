@@ -1,11 +1,11 @@
 Package: scribblr
 Title: A Notepad Inside RStudio 
-Version: 0.2.0.9000
+Version: 0.2.1
 Authors@R: 
     person(given = "Valerio",
            family = "Gherardi",
            role = c("aut", "cre"),
-           email = "vgherard@sissa.it",
+           email = "vgherard840@gmail.com",
            comment = c(ORCID = "0000-0002-8215-3013"))
 Description: A project aware notepad inside RStudio, for taking quick project-related notes without distractions. RStudio addin.
 License: GPL (>= 3)

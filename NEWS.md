@@ -1,4 +1,4 @@
-# scribblr (development version)
+# scribblr 0.2.1
 
 ### Fixes
 
@@ -6,6 +6,7 @@
 - Added instructions to install from my R-universe in README (#13)
 - Import `utils`.
 - Fix encoding of reserved symbols (e.g. `#`) in URL queries for exporting notes as GitHub issues.
+- Fix broken icons in "About" page (#25)
 
 ### API changes
 - Note names now can only contain alphanumeric characters, underscores (_) and 
