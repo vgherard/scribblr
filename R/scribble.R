@@ -151,8 +151,8 @@ scribble <- function(note = NULL) {
 							align = "center"
 						)
 						,p("Author: Valerio Gherardi",
-						   a("vgherard@sissa.it",
-						     href = "mailto:vgherard@sissa.it"
+						   a("vgherard840@gmail.com",
+						     href = "mailto:vgherard840@gmail.com"
 						   ),
 						   align = "center"
 						)
